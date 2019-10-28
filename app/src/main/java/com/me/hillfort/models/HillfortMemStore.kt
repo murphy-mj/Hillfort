@@ -31,6 +31,18 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
         return settings
     }
 
+    override fun findOne(id: Long) : HillfortModel? {
+        var foundHillfort: HillfortModel? = hillforts.find { p -> p.id == id }
+        return foundHillfort
+    }
+
+    override fun findOneSetting(id: Long) : SettingsModel? {
+        var foundSetting: SettingsModel? = settings.find { p -> p.id == id }
+        return foundSetting
+    }
+
+
+
     override fun create(hillfort: HillfortModel) {
         hillfort.id = getId()
         hillforts.add(hillfort)
@@ -45,17 +57,24 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
 
 
     override fun update(hillfort: HillfortModel) {
-        var foundHillfort: HillfortModel? = hillforts.find { p -> p.id == hillfort.id }
+   //     var foundHillfort: HillfortModel? = hillforts.find { p -> p.id == hillfort.id }
+
+       var foundHillfort: HillfortModel? =  findOne(hillfort.id!!)
         if (foundHillfort != null) {
             foundHillfort.title = hillfort.title
             foundHillfort.description = hillfort.description
             foundHillfort.image = hillfort.image
+            foundHillfort.lat = hillfort.lat
+            foundHillfort.lng = hillfort.lng
+            foundHillfort.zoom = hillfort.zoom
             logAll();
         }
     }
 
     override fun updateSetting(setting: SettingsModel) {
-        var foundSetting: SettingsModel? = settings.find { p -> p.id == setting.id }
+  //      var foundSetting: SettingsModel? = settings.find { p -> p.id == setting.id }
+
+        var foundSetting: SettingsModel? =findOneSetting (setting.id!!)
         if (foundSetting != null) {
             foundSetting.email = setting.email
             foundSetting.password = setting.password
@@ -69,5 +88,8 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
 
     internal fun logAll() {
         hillforts.forEach { info("${it}") }
+    }
+    internal fun logAllSettings() {
+        settings.forEach { info("${it}") }
     }
 }

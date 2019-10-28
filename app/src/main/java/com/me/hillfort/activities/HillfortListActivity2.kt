@@ -7,7 +7,7 @@ import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.activity_hillfort_list.*
+import kotlinx.android.synthetic.main.activity_hillfort_list2.*
 import kotlinx.android.synthetic.main.card_hillfort.view.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
@@ -30,7 +30,19 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+        loadHillforts()
     }
+
+    private fun loadHillforts() {
+        showHillforts( app.hillforts.findAll())
+    }
+
+    fun showHillforts (hillforts: List<HillfortModel>) {
+        recyclerView.adapter = HillfortAdapter(hillforts, this)
+        recyclerView.adapter?.notifyDataSetChanged()
+    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main, menu)
@@ -45,7 +57,7 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
             }
 
             R.id.item_settings -> {
-                toast("add selected")
+                toast("settings selected")
                 startActivityForResult<SettingsActivity>(0)
             }
 
@@ -58,7 +70,8 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        recyclerView.adapter?.notifyDataSetChanged()
+      //  recyclerView.adapter?.notifyDataSetChanged()
+        loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
     }
 }

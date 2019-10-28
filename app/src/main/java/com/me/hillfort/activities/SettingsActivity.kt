@@ -22,7 +22,7 @@ import com.me.models.Stats
 import com.me.hillfort.models.HillfortModel
 import com.me.models.SettingsModel
 import kotlinx.android.synthetic.main.activity_hillfort.*
-import kotlinx.android.synthetic.main.activity_hillfort.description
+import kotlinx.android.synthetic.main.activity_hillfort.hillfortDescription
 import kotlinx.android.synthetic.main.card_hillfort.*
 
 
