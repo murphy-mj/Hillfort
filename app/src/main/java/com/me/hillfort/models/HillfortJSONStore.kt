@@ -49,17 +49,32 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
 
     override fun update(hillfort: HillfortModel) {
         val hillfortsList = findAll() as ArrayList<HillfortModel>
-        var foundPlacemark: HillfortModel? = hillfortsList.find { p -> p.id == hillfort.id }
-        if (foundPlacemark != null) {
-            foundPlacemark.title = hillfort.title
-            foundPlacemark.description = hillfort.description
-            foundPlacemark.image = hillfort.image
-            foundPlacemark.lat = hillfort.lat
-            foundPlacemark.lng = hillfort.lng
-            foundPlacemark.zoom = hillfort.zoom
+        var foundHillfort: HillfortModel? = hillfortsList.find { p -> p.id == hillfort.id }
+        if (foundHillfort != null) {
+            foundHillfort.title = hillfort.title
+            foundHillfort.description = hillfort.description
+            foundHillfort.image = hillfort.image
+            foundHillfort.lat = hillfort.lat
+            foundHillfort.lng = hillfort.lng
+            foundHillfort.zoom = hillfort.zoom
         }
         serialize()
     }
+
+
+    override fun remove(hf: HillfortModel): Int {
+        var foundHillfort: HillfortModel? = hillforts.find { p -> p.id == hf.id }
+        if(foundHillfort != null){
+            hillforts.remove(hf)
+            serialize()
+            return 1
+        }
+        return 0
+    }
+
+
+
+
 
     private fun serialize() {
         val jsonString = gsonBuilder.toJson(hillforts, listType)

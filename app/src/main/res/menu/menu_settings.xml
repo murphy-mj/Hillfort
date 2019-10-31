@@ -4,12 +4,9 @@
 
     <item
         android:id="@+id/item_settings_cancel"
-        android:title="@string/menu_cancelHillfort"
+        android:title="@string/menu_cancel"
+        android:tooltipText="@string/menutt_cancel"
         app:showAsAction="always"/>
 
-    <item
-        android:id="@+id/item_stats"
-        android:title="@string/menu_stats"
-        app:showAsAction="always"/>
 
 </menu>

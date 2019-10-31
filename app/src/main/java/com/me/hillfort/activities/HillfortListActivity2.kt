@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_hillfort_list2.*
@@ -14,11 +15,13 @@ import org.jetbrains.anko.startActivityForResult
 import com.me.hillfort.R
 import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.HillfortModel
+import com.me.models.SettingsModel
 import org.jetbrains.anko.toast
 
 class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
 
     lateinit var app: MainApp
+    var loginUser :String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,9 +30,15 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
         toolbar.title = title
         setSupportActionBar(toolbar)
 
+        if (intent.hasExtra("id")) {
+          //  var userID = intent.extras?.getParcelable<SettingsModel>("id")!!.toString()
+            var userID = intent.getStringExtra("id")
+            loginUser = app.settings.findOneName(userID).toString()
+        }
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+        toast("Welcome $loginUser")
         loadHillforts()
     }
 
@@ -52,9 +61,21 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
            R.id.item_add -> {
-               toast("Add selected")
+               toast("Add Hillfort selected")
                 startActivityForResult<HillfortActivity>(0)
             }
+
+
+            R.id.item_logout -> {
+                toast("Logout selected")
+                loginUser = ""
+                finish()
+            }
+            R.id.item_update -> {
+                toast("please click on the hillfort you wish to update")
+                //no action required
+            }
+
 
             R.id.item_settings -> {
                 toast("settings selected")

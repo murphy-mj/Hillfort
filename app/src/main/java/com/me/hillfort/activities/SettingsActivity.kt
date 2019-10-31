@@ -45,8 +45,8 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
         btnSetAdd.setOnClickListener() {
             setting.email = settingEmail.text.toString()
             setting.password = settingPassword.text.toString()
-            if (setting.email.isEmpty()) {
-                toast(R.string.enter_hillfort_title)
+            if (setting.email.isEmpty()|| setting.password.isEmpty())  {
+                toast(R.string.hint_settingsAll)
             } else {
                     app.settings.createSetting(setting.copy())
                 }
@@ -66,7 +66,7 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item?.itemId) {
-            R.id.item_cancel -> {
+            R.id.item_settings_cancel -> {
                 finish()
             }
           //  R.id.item_cancel -> {

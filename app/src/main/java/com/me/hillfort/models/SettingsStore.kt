@@ -7,4 +7,7 @@ interface SettingsStore {
     fun createSetting(setting: SettingsModel)
     fun updateSetting(setting: SettingsModel)
     fun findOneSetting(id: Long):SettingsModel?
+    fun findOneEmail(email: String):SettingsModel?
+    fun findOneID(OneSet: SettingsModel?):Long?
+    fun findOneName(id: String) : String?
 }

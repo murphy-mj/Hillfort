@@ -41,7 +41,10 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
         return foundSetting
     }
 
-
+    override fun findOneEmail(email: String) : SettingsModel? {
+        var foundSetting: SettingsModel? = settings.find { p -> p.email == email }
+        return foundSetting
+    }
 
     override fun create(hillfort: HillfortModel) {
         hillfort.id = getId()
@@ -54,6 +57,22 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
         settings.add(setting)
         logAll()
     }
+
+    override fun findOneID(OneSet: SettingsModel?) : Long? {
+        var foundUser: SettingsModel? = settings.find { p -> p.id == OneSet?.id }
+        if (foundUser != null) {
+            return foundUser?.id
+        } else {
+            return 0
+        }
+    }
+
+    override fun findOneName(id: String) : String? {
+        var id_long = id.toLong()
+        var foundUser: SettingsModel? = settings.find { p -> p.id == id_long }
+        return foundUser?.email
+    }
+
 
 
     override fun update(hillfort: HillfortModel) {
@@ -83,7 +102,14 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
     }
 
 
-
+    override fun remove(hf: HillfortModel): Int {
+        var foundHillfort: HillfortModel? = hillforts.find { p -> p.id == hf.id }
+        if(foundHillfort != null){
+            hillforts.remove(hf)
+            return 1
+        }
+        return 0
+    }
 
 
     internal fun logAll() {

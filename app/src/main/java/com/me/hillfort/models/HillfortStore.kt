@@ -5,4 +5,5 @@ interface HillfortStore {
     fun create(hillfort: HillfortModel)
     fun update(hillfort: HillfortModel)
     fun findOne(id: Long) : HillfortModel?
+    fun remove(hillfort: HillfortModel) : Int
 }

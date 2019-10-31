@@ -1,26 +1,57 @@
 <resources>
-    <string name="app_name">Hillfort</string>
-    <string name="hint_hillfortTitle">Hillfort Title</string>
-    <string name="hint_hillfortDescription">Description </string>
-    <string name="hint_settingEmail">your Email </string>
-    <string name="hint_password">your password </string>
-    <string name="button_addHillfort">Add Hillfort</string>
+    <string name="app_name">Hillfort Assignment</string>
+
+    <string name="hint_hillfortTitle">Enter Hillfort Title</string>
+    <string name="hint_hillfortDescription">Enter a Description </string>
+    <string name="hint_settingsEmail">Enter your Email </string>
+    <string name="hint_settingsPassword">Enter your password </string>
+    <string name="hint_settingsAll">Please check your details </string>
+    <string name="hint_hillfortImage">Do you wish to select an Image </string>
+
     <string name="menu_addHillfort">Add</string>
-    <string name="menu_up">UP</string>
+    <string name="menutt_addHillfort">to add new hillfort</string>
+    <string name="menu_updateHillfort">Update</string>
+    <string name="menutt_updateHillfort">Click on hillfort to edit</string>
+    <string name="menu_up">Back</string>
+    <string name="menutt_up">brings to back to main screen</string>
     <string name="menu_logout">LogOut</string>
-    <string name="menu_cancelHillfort">Cancel</string>
+    <string name="menutt_logout">Logs you Out</string>
+    <string name="menu_cancel">Cancel</string>
+    <string name="menutt_cancel">to cancel action</string>
+    <string name="menu_delete">Delete</string>
+    <string name="menutt_delete">to delete object</string>
     <string name="menu_settings">Settings</string>
-    <string name="enter_hillfort_title"> Please enter a Hillfort Title </string>
-    <string name="save_hillfort"> Save Hillfort </string>
-    <string name="button_addImage"> Add Image </string>
-    <string name="button_updSetting"> Update </string>
-    <string name="select_hillfort_image">Select hillfort image</string>
-    <string name="change_hillfort_image">Change hillfort image</string>
-    <string name="set_hillfort_image">Set hillfort image</string>
-    <string name="button_location">Set Location</string>
-    <string name="save_setting">Save Setting</string>
-    <string name="title_activity_maps">Map</string>
+    <string name="menutt_settings">to view and update user Info</string>
     <string name="menu_stats">Stats</string>
+    <string name="menutt_stats">to view stats</string>
+
+
+    <string name="button_addImage"> Add Image </string>
+    <string name="button_selectImage">Select Image</string>
+    <string name="button_saveImage">Save Image</string>
+
+    <string name="button_addHillfort"> Add Hillfort </string>
+    <string name="button_saveHillfort"> Save Hillfort </string>
+    <string name="button_updateHillfort"> Update Hillfort </string>
+    <string name="button_deleteHillfort"> Delete Hillfort </string>
+    <string name="button_cancelHillfort"> Cancel Activity </string>
+
+    <string name="button_addSetting"> Add Student </string>
+    <string name="button_updateSetting"> Update Student Settings </string>
+    <string name="button_saveSetting">Save Student Setting</string>
+    <string name="button_deleteSetting">Delete Student Setting</string>
+
+    <string name="button_setLocation">Set Location</string>
+    <string name="button_saveLocation">Save Location</string>
+    <string name="button_updateLocation">Update Location</string>
+    <string name="button_deleteLocation">Delete Location</string>
+
+    <string name="toast_locationDeleted">Location Deleted</string>
+    <string name="toast_hillfortDeleted">Hillfort Deleted</string>
+    <string name="toast_settingDeleted">Setting Deleted</string>
+    <string name="toast_imageDeleted">Image Deleted</string>
+
+    <string name="title_activity_maps">Map</string>
 
 
 

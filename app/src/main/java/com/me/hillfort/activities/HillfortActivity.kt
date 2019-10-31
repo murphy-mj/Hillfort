@@ -43,17 +43,15 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-
-
-
+import java.util.logging.Logger
 
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     var hillfort = HillfortModel()
     lateinit var app: MainApp
-    val IMAGE_REQUEST = 1
-    val LOCATION_REQUEST = 2
+    val IMAGE_REQUEST = 5
+    val LOCATION_REQUEST = 3
     private var btn: Button? = null
     private var imageview: ImageView? = null
     private val GALLERY = 1
@@ -61,6 +59,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     val TAKE_PHOTO_REQUEST: Int = 2
     val PICK_PHOTO_REQUEST: Int = 1
+
     var fileUri: Uri? = null
 
     //   var location:Location = { if (location?.lat == 0.0 && location?.lng == 0.0 ){ location = Location(52.245696, -7.139102, 15f) }}
@@ -76,34 +75,36 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
         var edit = false
+        var del = false
 
-        chooseImage.setOnClickListener { showPictureDialog() }
-
+        //chooseImage.setOnClickListener { askCameraPermission() }
+        chooseImage.setOnClickListener {showPictureDialog() }
 
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
             hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
+
+            chooseImage.setText(R.string.button_selectImage)
+            hillfortLocation.setText(R.string.button_updateLocation)
+            btnAdd.setText(R.string.button_updateHillfort)
             hillfortTitle.setText(hillfort.title)
             hillfortDescription.setText(hillfort.description)
             hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
-            if (hillfort.image == null) {
-                chooseImage.setText(R.string.change_hillfort_image)
+            if (hillfort.image != null) {
+                chooseImage.setText(R.string.button_selectImage)
+                toast(R.string.hint_hillfortImage)
             }
-            btnAdd.setText(R.string.save_hillfort)
+            btnAdd.setText(R.string.button_saveHillfort)
+            btnDel.setText(R.string.button_deleteHillfort)
         }
 
-        //else {
-        //      hillfort.title = hillfortTitle.text.toString()
-        //      hillfort.description = hillfortDescription.text.toString()
-        //      hillfort.image = hillfortImage.toString()
-        //}
+
 
         btnAdd.setOnClickListener() {
             hillfort.title = hillfortTitle.text.toString()
             hillfort.description = hillfortDescription.text.toString()
-            hillfort.image = hillfortImage.toString()
-            if (hillfort.image.isEmpty()) {
-                toast(R.string.enter_hillfort_title)
+            if (hillfort.title.isEmpty()) {
+                toast(R.string.hint_hillfortTitle)
             } else {
                 if (edit) {
                     app.hillforts.update(hillfort.copy())
@@ -112,9 +113,28 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 }
             }
             info("add Button Pressed: $hillfortTitle")
+            toast(R.string.hint_hillfortTitle)
             setResult(AppCompatActivity.RESULT_OK)
             finish()
         }
+
+        btnDel.setOnClickListener() {
+            if (edit == true) {
+                finish()
+            } else {
+                app.hillforts.remove(hillfort.copy())
+                info("delete Button Pressed: $hillfortTitle")
+                toast(R.string.toast_hillfortDeleted)
+                setResult(AppCompatActivity.RESULT_OK)
+                finish()
+            }
+
+        }
+
+
+
+
+
 
        // chooseImage.setOnClickListener {
        //     startActivity (intentFor<ImageCaptureActivity>())
@@ -123,16 +143,16 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
         //  placemarkLocation.setOnClickListener {
         //   info ("Set Location Pressed")
-        //    toast("set Location passed")
-        //    startActivity (intentFor<MapsActivity>())
-        //  }
+         //   toast("set Location passed")
+         //   startActivity (intentFor<MapsActivity>())
+         //}
 
-   //     hillfortLocation.setOnClickListener {
-   //         startActivityForResult(intentFor<MapsActivity>()
-    //            .putExtra("location", location), LOCATION_REQUEST)
-            // val location = Location(52.245696, -7.139102, 15f)
-            // startActivity (intentFor<MapsActivity>().putExtra("location", location))
-    //    }
+        hillfortLocation.setOnClickListener {
+            startActivityForResult(intentFor<MapsActivity>()
+                .putExtra("location", location), LOCATION_REQUEST)
+            val location = Location(52.245696, -7.139102, 15f)
+            startActivity (intentFor<MapsActivity>().putExtra("location", location))
+        }
 
 
     }
@@ -147,27 +167,36 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             R.id.item_cancel -> {
                 finish()
             }
+            R.id.item_delete -> {
+
+                finish()
+            }
         }
+
+
+
         return super.onOptionsItemSelected(item)
     }
+
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
-           // IMAGE_REQUEST -> {
-           //     if (data != null) {
-           //         hillfort.image = data.getData().toString()
-           //         hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-           //         toast(hillfort.image.toString())
-           //     }}
+            GALLERY -> {
+                if (data != null) {
+                    hillfort.image = data.getData().toString()
+                    hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+                    toast(hillfort.image.toString())
+                }}
             CAMERA -> {
                     if (data != null) {
                         hillfort.image = data.getData().toString()
                         toast(hillfort.image.toString())
-                        //hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-                        val thumbnail = data!!.extras!!.get("data") as Bitmap
+                        hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+                       // val thumbnail = data!!.extras!!.get("data") as Bitmap
                        // imageview!!.setImageBitmap(thumbnail)
-                        hillfortImage.setImageBitmap(thumbnail)
+                      //  hillfortImage.setImageBitmap(thumbnail)
                        // hillfortImage.setImageBitmap(readImage(this, resultCode, data))
                        // saveImage(thumbnail)
                      //   Toast.makeText(this, "Image Saved!", Toast.LENGTH_SHORT).show()
@@ -196,18 +225,26 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         pictureDialog.show()
     }
 
-     fun choosePhotoFromGallary() {
-        val galleryIntent = Intent(Intent.ACTION_PICK,
-            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
 
-        startActivityForResult(galleryIntent, GALLERY)
-    }
+
+     fun choosePhotoFromGallary() {
+       // val galleryIntent = Intent(Intent.ACTION_PICK,
+       //     MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+       //  val galleryIntent = Intent()
+       //  galleryIntent.type = "image/*"
+       //  galleryIntent.action = Intent.ACTION_OPEN_DOCUMENT
+       //  galleryIntent.addCategory(Intent.CATEGORY_OPENABLE)
+       // startActivityForResult(galleryIntent, GALLERY)
+         showImagePicker(this, GALLERY)
+
+
+     }
+
 
      fun takePhotoFromCamera() {
-      //  askCameraPermission()
-        launchCamera()
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(intent, CAMERA)
+         askCameraPermission()
+       // val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+       // startActivityForResult(intent, CAMERA)
     }
 
     private fun launchCamera() {
@@ -219,9 +256,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if(intent.resolveActivity(packageManager) != null) {
             intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri)
-           // intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
-            //        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-            startActivityForResult(intent, TAKE_PHOTO_REQUEST)
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
+            startActivityForResult(intent, CAMERA)
         }
     }
 
@@ -272,51 +309,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
 
-
-
-
-
-
-
-        fun saveImage(myBitmap: Bitmap):String {
-            val bytes = ByteArrayOutputStream()
-            myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-            val wallpaperDirectory = File(
-                (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
-            // have the object build the directory structure, if needed.
-            Log.d("fee",wallpaperDirectory.toString())
-            if (!wallpaperDirectory.exists())
-            {
-
-                wallpaperDirectory.mkdirs()
-            }
-
-            try
-            {
-                Log.d("heel",wallpaperDirectory.toString())
-                val f = File(wallpaperDirectory, ((Calendar.getInstance()
-                    .getTimeInMillis()).toString() + ".jpg"))
-                f.createNewFile()
-                val fo = FileOutputStream(f)
-                fo.write(bytes.toByteArray())
-                MediaScannerConnection.scanFile(this,
-                    arrayOf(f.getPath()),
-                    arrayOf("image/jpeg"), null)
-                fo.close()
-                Log.d("TAG", "File Saved::--->" + f.getAbsolutePath())
-
-                return f.getAbsolutePath()
-            }
-            catch (e1: IOException) {
-                e1.printStackTrace()
-            }
-
-            return ""
-        }
-
-        companion object {
-            private val IMAGE_DIRECTORY = "/demonuts"
-        }
 
 
 }
