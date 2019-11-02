@@ -14,6 +14,10 @@ val JSON_FILE = "hillforts.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<java.util.ArrayList<HillfortModel>>() {}.type
 
+val JSON_FILE_V = "hillfortsVisited.json"
+val gsonBuilder_V = GsonBuilder().setPrettyPrinting().create()
+val listType_V = object : TypeToken<java.util.ArrayList<HillfortModel>>() {}.type
+
 fun generateRandomId(): Long {
     return Random().nextLong()
 }
@@ -22,6 +26,7 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
 
     val context: Context
     var hillforts = mutableListOf<HillfortModel>()
+    var hillforts_v = mutableListOf<HillfortModel>()
 
     constructor (context: Context) {
         this.context = context
@@ -57,6 +62,7 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
             foundHillfort.lat = hillfort.lat
             foundHillfort.lng = hillfort.lng
             foundHillfort.zoom = hillfort.zoom
+            foundHillfort.visit_yn = hillfort.visit_yn
         }
         serialize()
     }
@@ -85,4 +91,17 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
         val jsonString = read(context, JSON_FILE)
         hillforts = Gson().fromJson(jsonString, listType)
     }
+
+    fun serialize_V(file : List<HillfortModel>) {
+        val jsonString = gsonBuilder_V.toJson(hillforts_v, listType_V)
+        write(context, JSON_FILE_V, jsonString)
+    }
+
+    private fun deserialize_V() {
+        val jsonString = read(context, JSON_FILE_V)
+        hillforts_v = Gson().fromJson(jsonString, listType_V)
+    }
+
+
+
 }

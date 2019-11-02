@@ -48,10 +48,11 @@
                     android:autofillHints=""
                     android:hint="@string/hint_hillfortTitle"
                     android:inputType="text"
-                    android:maxLength="25"
+                    android:maxLength="125"
                     android:maxLines="1"
                     android:padding="8dp"
                     android:textColor="@color/colorPrimaryDark"
+
                     android:textSize="14sp" />
 
                 <EditText
@@ -61,16 +62,18 @@
                     android:layout_margin="8dp"
                     android:hint="@string/hint_hillfortDescription"
                     android:inputType="text"
-                    android:maxLength="25"
+                    android:maxLength="125"
                     android:maxLines="1"
                     android:padding="8dp"
-                    android:textColor="@color/colorPrimaryDark"
+                    android:textColor="@color/colorAccent"
+
+
                     android:textSize="14sp"/>
 
                 <ImageView
                     android:id="@+id/hillfortImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200px"
                     android:scaleType="fitXY"
                     app:srcCompat="@mipmap/ic_launcher"
                     />
@@ -99,6 +102,29 @@
                     android:text="@string/button_setLocation"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/date_text_view"
+                    android:text="TextView"
+                    android:layout_margin="16dp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+
+
+
+                <ToggleButton
+                    android:id="@+id/hillfortToggleButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@color/colorAccent"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/togglebutton"
+                    android:textOff="Site Not Visited"
+                    android:textOn="Site Visit completed" />
 
 
 

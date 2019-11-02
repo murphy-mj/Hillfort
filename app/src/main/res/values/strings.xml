@@ -29,6 +29,8 @@
     <string name="button_addImage"> Add Image </string>
     <string name="button_selectImage">Select Image</string>
     <string name="button_saveImage">Save Image</string>
+    <string name="togglebutton">Site Visted</string>
+
 
     <string name="button_addHillfort"> Add Hillfort </string>
     <string name="button_saveHillfort"> Save Hillfort </string>

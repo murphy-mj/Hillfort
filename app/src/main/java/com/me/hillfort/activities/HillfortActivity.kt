@@ -1,6 +1,8 @@
 package com.me.hillfort.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 //import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -15,7 +17,9 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
@@ -43,6 +47,7 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.text.SimpleDateFormat
 import java.util.logging.Logger
 
 
@@ -73,12 +78,17 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         setSupportActionBar(toolbarAdd)
         info("Hillfort Activity started..")
 
+
         app = application as MainApp
         var edit = false
         var del = false
+        var visit: Boolean = false
 
         //chooseImage.setOnClickListener { askCameraPermission() }
         chooseImage.setOnClickListener {showPictureDialog() }
+
+
+
 
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
@@ -94,6 +104,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 chooseImage.setText(R.string.button_selectImage)
                 toast(R.string.hint_hillfortImage)
             }
+            hillfortToggleButton.setChecked(hillfort.visit_yn)
+            date_text_view.setText(hillfort.visit_date)
+
+
             btnAdd.setText(R.string.button_saveHillfort)
             btnDel.setText(R.string.button_deleteHillfort)
         }
@@ -103,6 +117,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         btnAdd.setOnClickListener() {
             hillfort.title = hillfortTitle.text.toString()
             hillfort.description = hillfortDescription.text.toString()
+            var visit:Boolean = hillfortToggleButton.isChecked()
+            toast("visited is ${visit}")
+            hillfort.visit_yn = visit
+            hillfort.visit_date = date_text_view.text.toString()
             if (hillfort.title.isEmpty()) {
                 toast(R.string.hint_hillfortTitle)
             } else {
@@ -132,20 +150,21 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
 
 
+        date_text_view.setOnClickListener{
+            val today = Calendar.getInstance()
+            DatePickerDialog(this, object: DatePickerDialog.OnDateSetListener {
+                override fun onDateSet(p0: DatePicker?, yyyy: Int, mm: Int, dd: Int) {
+                    val selected = Date(yyyy-1900, mm, dd) // Create a date object with offset.
+
+
+                    date_text_view.text = selected.toString() // Display the selected date, or do whatever.
+                }
+            }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show()
+        }
 
 
 
 
-       // chooseImage.setOnClickListener {
-       //     startActivity (intentFor<ImageCaptureActivity>())
-          //  showImagePicker(this, IMAGE_REQUEST)
-       // }
-
-        //  placemarkLocation.setOnClickListener {
-        //   info ("Set Location Pressed")
-         //   toast("set Location passed")
-         //   startActivity (intentFor<MapsActivity>())
-         //}
 
         hillfortLocation.setOnClickListener {
             startActivityForResult(intentFor<MapsActivity>()
@@ -172,9 +191,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 finish()
             }
         }
-
-
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -305,10 +321,5 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             }).check()
 
     }
-
-
-
-
-
 
 }

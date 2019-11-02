@@ -13,7 +13,7 @@ data class HillfortModel(var id: Long = 0,
                           var lat : Double = 0.0,
                           var lng: Double = 0.0,
                           var zoom: Float = 0f,
-                          var visit_date:Date = Date(),
+                          var visit_date:String = "na",
                           var visit_yn: Boolean = false ) : Parcelable
 
 
