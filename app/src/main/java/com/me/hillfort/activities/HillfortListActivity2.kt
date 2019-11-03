@@ -3,6 +3,7 @@ package com.me.hillfort.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.view.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
@@ -22,6 +23,7 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
 
     lateinit var app: MainApp
     var loginUser :String = ""
+    var hf:List<HillfortModel>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,12 +40,13 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
-        toast("Welcome $loginUser")
+        toast("Welcome into listAct 2  $loginUser")
         loadHillforts()
     }
 
     private fun loadHillforts() {
-        showHillforts( app.hillforts.findAll())
+        hf = app.hillforts.findAll()
+        showHillforts( hf!!)
     }
 
     fun showHillforts (hillforts: List<HillfortModel>) {
@@ -65,7 +68,6 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
                 startActivityForResult<HillfortActivity>(0)
             }
 
-
             R.id.item_logout -> {
                 toast("Logout selected")
                 loginUser = ""
@@ -75,7 +77,19 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
                 toast("please click on the hillfort you wish to update")
                 //no action required
             }
-
+            R.id.item_stats -> {
+                toast("stats selected")
+                toast("Sending you to stats $loginUser")
+             //   testCall()
+             //   val intent = Intent(this, StatsActivity::class.java).apply {
+              //      putExtra("id", loginUser)
+                 //   putExtra("data",hf as Parcelable)
+              //  }
+             //   startActivity(intent)
+              //  startActivityForResult<Settings2Activity>(0)
+                 startActivityForResult(intentFor<Settings2Activity>().putExtra("email", loginUser),0)
+             //   startActivityForResult(intentFor<StatsActivity>().putExtra("data",app.hillforts.findAll() as Parcelable),0)
+            }
 
             R.id.item_settings -> {
                 toast("settings selected")
@@ -95,4 +109,13 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
         loadHillforts()
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+ //   fun testCall(){
+      // startActivityForResult<StatsActivity>(0)
+      //  startActivityForResult(intentFor<StatsActivity>().putExtra("id", loginUser),0)
+  //     startActivityForResult(intentFor<Settings2Activity>().putExtra("id",loginUser),0)
+      //  startActivityForResult(intentFor<SettingsActivity>().putExtra("id",loginUser),0)
+ //   }
+
+
 }

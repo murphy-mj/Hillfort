@@ -18,7 +18,6 @@ import com.me.hillfort.helpers.readImageFromPath
 import com.me.hillfort.helpers.showImagePicker
 import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.Location
-import com.me.models.Stats
 import com.me.hillfort.models.HillfortModel
 import com.me.models.SettingsModel
 import kotlinx.android.synthetic.main.activity_hillfort.*

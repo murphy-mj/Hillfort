@@ -57,9 +57,11 @@ class SettingsJSONStore : SettingsStore, AnkoLogger {
     override fun findOneName(id: String) : String? {
         var id_long = id.toLong()
         var foundUser: SettingsModel? = settings.find { p -> p.id == id_long }
-        return foundUser?.email
+        if (foundUser != null) {
+            return foundUser?.email
+        }
+        return "no User"
     }
-
 
 
     override fun createSetting(user: SettingsModel) {

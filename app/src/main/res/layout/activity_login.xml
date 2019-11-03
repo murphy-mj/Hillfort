@@ -23,17 +23,19 @@
             android:layout_marginTop="100dp"
             android:ems="10"
             android:inputType="textEmailAddress"
+            android:hint="@string/hint_login_f1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/password_user"
-            android:layout_width="264dp"
-            android:layout_height="58dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="116dp"
             android:ems="10"
             android:inputType="textPassword"
+            android:hint="@string/hint_login_f2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/email_user" />

@@ -1,6 +1,8 @@
 package com.me.hillfort.activities
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.app.DatePickerDialog
 //import android.app.AlertDialog
 import android.content.ContentValues
 import android.content.Intent
@@ -15,7 +17,9 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.Button
+import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
@@ -43,13 +47,16 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import java.text.SimpleDateFormat
 import java.util.logging.Logger
 
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     var hillfort = HillfortModel()
+
     lateinit var app: MainApp
+
     val IMAGE_REQUEST = 5
     val LOCATION_REQUEST = 3
     private var btn: Button? = null
@@ -57,14 +64,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     private val GALLERY = 1
     private val CAMERA = 2
 
-    val TAKE_PHOTO_REQUEST: Int = 2
-    val PICK_PHOTO_REQUEST: Int = 1
 
     var fileUri: Uri? = null
 
     //   var location:Location = { if (location?.lat == 0.0 && location?.lng == 0.0 ){ location = Location(52.245696, -7.139102, 15f) }}
     var location = Location(52.245696, -7.139102, 15f)
-
+    var markerName:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,12 +78,17 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         setSupportActionBar(toolbarAdd)
         info("Hillfort Activity started..")
 
+
         app = application as MainApp
         var edit = false
         var del = false
+        var visit: Boolean = false
 
         //chooseImage.setOnClickListener { askCameraPermission() }
         chooseImage.setOnClickListener {showPictureDialog() }
+
+
+
 
         if (intent.hasExtra("hillfort_edit")) {
             edit = true
@@ -94,6 +104,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 chooseImage.setText(R.string.button_selectImage)
                 toast(R.string.hint_hillfortImage)
             }
+            location_lat.setText(hillfort.lat.toString())
+            location_lat.setText(hillfort.lng.toString())
+            hillfortToggleButton.setChecked(hillfort.visit_yn)
+            date_text_view.setText(hillfort.visit_date)
+
+
             btnAdd.setText(R.string.button_saveHillfort)
             btnDel.setText(R.string.button_deleteHillfort)
         }
@@ -103,6 +119,13 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         btnAdd.setOnClickListener() {
             hillfort.title = hillfortTitle.text.toString()
             hillfort.description = hillfortDescription.text.toString()
+            var visit:Boolean = hillfortToggleButton.isChecked()
+            toast("visited is ${visit}")
+            hillfort.visit_yn = visit
+            hillfort.visit_date = date_text_view.text.toString()
+            hillfort.lat = location_lat.text as Double
+            hillfort.lng = location_lng.text as Double
+          //  hillfort.visit_date = date_text_view.text.toString()
             if (hillfort.title.isEmpty()) {
                 toast(R.string.hint_hillfortTitle)
             } else {
@@ -119,7 +142,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
 
         btnDel.setOnClickListener() {
-            if (edit == true) {
+            if (edit == false) {
                 finish()
             } else {
                 app.hillforts.remove(hillfort.copy())
@@ -132,26 +155,28 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
 
 
+        date_text_view.setOnClickListener{
+            val today = Calendar.getInstance()
+            DatePickerDialog(this, object: DatePickerDialog.OnDateSetListener {
+                override fun onDateSet(p0: DatePicker?, yyyy: Int, mm: Int, dd: Int) {
+                    val selected = Date(yyyy-1900, mm, dd) // Create a date object with offset.
+                    date_text_view.text = selected.toString() // Display the selected date, or do whatever.
+                }
+            }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show()
+        }
 
-
-
-
-       // chooseImage.setOnClickListener {
-       //     startActivity (intentFor<ImageCaptureActivity>())
-          //  showImagePicker(this, IMAGE_REQUEST)
-       // }
-
-        //  placemarkLocation.setOnClickListener {
-        //   info ("Set Location Pressed")
-         //   toast("set Location passed")
-         //   startActivity (intentFor<MapsActivity>())
-         //}
 
         hillfortLocation.setOnClickListener {
-            startActivityForResult(intentFor<MapsActivity>()
-                .putExtra("location", location), LOCATION_REQUEST)
-            val location = Location(52.245696, -7.139102, 15f)
-            startActivity (intentFor<MapsActivity>().putExtra("location", location))
+            validatePermission()
+            startActivity (intentFor<MapsActivity>().putExtra("name", hillfort.title))
+
+         //   startActivityForResult<MapsActivity>(0)
+         //   val location = Location(location_lat.text as Double, location_lng.text as Double, 15f)
+
+          //  startActivityForResult(intentFor<MapsActivity>()
+          //      .putExtra("location", location), LOCATION_REQUEST)
+          //  val location = Location(52.245696, -7.139102, 15f)
+         //   startActivity (intentFor<MapsActivity>().putExtra("location", location))
         }
 
 
@@ -172,9 +197,6 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 finish()
             }
         }
-
-
-
         return super.onOptionsItemSelected(item)
     }
 
@@ -228,16 +250,15 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
      fun choosePhotoFromGallary() {
-       // val galleryIntent = Intent(Intent.ACTION_PICK,
-       //     MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-       //  val galleryIntent = Intent()
-       //  galleryIntent.type = "image/*"
-       //  galleryIntent.action = Intent.ACTION_OPEN_DOCUMENT
-       //  galleryIntent.addCategory(Intent.CATEGORY_OPENABLE)
-       // startActivityForResult(galleryIntent, GALLERY)
          showImagePicker(this, GALLERY)
 
-
+        //val galleryIntent = Intent(Intent.ACTION_PICK,
+        //    MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        // val galleryIntent = Intent()
+        // galleryIntent.type = "image/*"
+        // galleryIntent.action = Intent.ACTION_OPEN_DOCUMENT
+        // galleryIntent.addCategory(Intent.CATEGORY_OPENABLE)
+       // startActivityForResult(galleryIntent, GALLERY)
      }
 
 
@@ -307,7 +328,48 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     }
 
 
+    fun validatePermission(){
+        toast("ask permission for fine location")
+        Dexter.withActivity(this)
+            .withPermissions(
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ).withListener(object : MultiplePermissionsListener {
+                override fun onPermissionsChecked(report: MultiplePermissionsReport) {/* ... */
+                    if(report.areAllPermissionsGranted()){
+                        //once permissions are granted, launch the camera
+                       // launchCamera()
+                    }else{
+                        toast("All permissions need to be granted to use fine location")
+                        //  Toast.makeText(this, "All permissions need to be granted to take photo", Toast.LENGTH_LONG).show()
+                    }
+                }
 
+                override fun onPermissionRationaleShouldBeShown(permissions: List<PermissionRequest>, token: PermissionToken) {/* ... */
+                    //show alert dialog with permission options
+                    AlertDialog.Builder(this@HillfortActivity)
+                        .setTitle(
+                            "title")
+                        .setMessage(
+                            "message")
+                        .setNegativeButton(
+                            android.R.string.cancel,
+                            { dialog, _ ->
+                                dialog.dismiss()
+                                token?.cancelPermissionRequest()
+                            })
+                        .setPositiveButton(android.R.string.ok,
+                            { dialog, _ ->
+                                dialog.dismiss()
+                                token?.continuePermissionRequest()
+                            })
+                        .setOnDismissListener({
+                            token?.cancelPermissionRequest() })
+                        .show()
+                }
+
+            }).check()
+
+    }
 
 
 
