@@ -6,7 +6,11 @@
     <string name="hint_settingsEmail">Enter your Email </string>
     <string name="hint_settingsPassword">Enter your password </string>
     <string name="hint_settingsAll">Please check your details </string>
-    <string name="hint_hillfortImage">Do you wish to select an Image </string>
+    <string name="hint_hillfortImage">Please add an image </string>
+    <string name="hint_login_f1">please enter email</string>
+    <string name="hint_login_f2">please enter password </string>
+
+
 
     <string name="menu_addHillfort">Add</string>
     <string name="menutt_addHillfort">to add new hillfort</string>
@@ -53,6 +57,7 @@
     <string name="toast_settingDeleted">Setting Deleted</string>
     <string name="toast_imageDeleted">Image Deleted</string>
 
+    <string name="button_date_Visited">Press to select Date </string>
     <string name="title_activity_maps">Map</string>
 
 

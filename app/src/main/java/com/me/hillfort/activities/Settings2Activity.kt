@@ -51,27 +51,14 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
         toolbarStats.title = title
         setSupportActionBar(toolbarStats)
         info("STATS Activity started..")
-
         app = application as MainApp
 
 
-    //    btnSetAdd.setOnClickListener() {
-    //        setting.email = settingEmail.text.toString()
-    //        setting.password = settingPassword.text.toString()
-    //        if (setting.email.isEmpty()|| setting.password.isEmpty())  {
-    //            toast(R.string.hint_settingsAll)
-    ///        } else {
-    //                app.settings.createSetting(setting.copy())
-    //            }
-    //        info("add Button Pressed")
-    //        setResult(AppCompatActivity.RESULT_OK)
-    //        finish()
-    //    }
+
 
         if (intent.hasExtra("email")) {
             toast("extra extra Email")
             userEmail = intent.getStringExtra("email")
-          // loginUser = app.settings.findOneEmail(userID).toString()
         }
 
         hillforts = app.hillforts.findAll().toMutableList()
@@ -80,11 +67,9 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
             numberOfHillforts = hillforts.size
             numberVisited  = hillforts.filter {it.visit_yn}.size
           //  hillfortsNotVisited = hillforts.filter {it.visit_yn}.toMutableList()
-
         }
-
-        textView2.text = userEmail
-        textView1.text = "This is the story so far. I ${userEmail} , have ${numberOfHillforts} in my collection. I have visited ${numberVisited} so far."
+        textView1.text = "Hi ${userEmail}"
+        textView2.text = "This is the story so far. I ${userEmail} , have ${numberOfHillforts} in my collection. I have visited ${numberVisited} so far."
 
 
 
@@ -92,7 +77,7 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
 
             val layoutManager = LinearLayoutManager(this)
             recyclerView.layoutManager = layoutManager
-            recyclerView.adapter = HillfortAdapter(hillforts?.filter {it.visit_yn}.toMutableList(), this)
+            recyclerView.adapter = HillfortAdapter(hillforts.filter {!it.visit_yn}.toMutableList(), this)
             recyclerView.adapter?.notifyDataSetChanged()
 
         }

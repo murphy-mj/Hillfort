@@ -68,7 +68,6 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
                 startActivityForResult<HillfortActivity>(0)
             }
 
-
             R.id.item_logout -> {
                 toast("Logout selected")
                 loginUser = ""

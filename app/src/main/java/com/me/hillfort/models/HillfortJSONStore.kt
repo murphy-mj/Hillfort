@@ -10,13 +10,10 @@ import java.nio.file.Files.exists
 import com.me.hillfort.helpers.*
 import java.util.*
 
-val JSON_FILE = "hillforts.json"
+val JSON_FILE = "hillforts2.json"
 val gsonBuilder = GsonBuilder().setPrettyPrinting().create()
 val listType = object : TypeToken<java.util.ArrayList<HillfortModel>>() {}.type
 
-val JSON_FILE_V = "hillfortsVisited.json"
-val gsonBuilder_V = GsonBuilder().setPrettyPrinting().create()
-val listType_V = object : TypeToken<java.util.ArrayList<HillfortModel>>() {}.type
 
 fun generateRandomId(): Long {
     return Random().nextLong()
@@ -63,6 +60,7 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
             foundHillfort.lng = hillfort.lng
             foundHillfort.zoom = hillfort.zoom
             foundHillfort.visit_yn = hillfort.visit_yn
+            foundHillfort.visit_date = hillfort.visit_date
         }
         serialize()
     }
@@ -92,15 +90,6 @@ class HillfortJSONStore : HillfortStore, AnkoLogger {
         hillforts = Gson().fromJson(jsonString, listType)
     }
 
-    fun serialize_V(file : List<HillfortModel>) {
-        val jsonString = gsonBuilder_V.toJson(hillforts_v, listType_V)
-        write(context, JSON_FILE_V, jsonString)
-    }
-
-    private fun deserialize_V() {
-        val jsonString = read(context, JSON_FILE_V)
-        hillforts_v = Gson().fromJson(jsonString, listType_V)
-    }
 
 
 
