@@ -70,6 +70,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     //   var location:Location = { if (location?.lat == 0.0 && location?.lng == 0.0 ){ location = Location(52.245696, -7.139102, 15f) }}
     var location = Location(52.245696, -7.139102, 15f)
     var markerName:String = ""
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,7 +81,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
         app = application as MainApp
-        var edit = false
+
         var del = false
         var visit: Boolean = false
 
@@ -123,8 +124,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             toast("visited is ${visit}")
             hillfort.visit_yn = visit
             hillfort.visit_date = date_text_view.text.toString()
-            hillfort.lat = location_lat.text as Double
-            hillfort.lng = location_lng.text as Double
+         //   hillfort.lat = location_lat.text as Double
+         //   hillfort.lng = location_lng.text as Double
           //  hillfort.visit_date = date_text_view.text.toString()
             if (hillfort.title.isEmpty()) {
                 toast(R.string.hint_hillfortTitle)
@@ -193,8 +194,14 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 finish()
             }
             R.id.item_delete -> {
-
-                finish()
+                if (edit == false) {
+                    finish()
+                } else {
+                    app.hillforts.remove(hillfort.copy())
+                    toast(R.string.toast_hillfortDeleted)
+                    setResult(AppCompatActivity.RESULT_OK)
+                    finish()
+                }
             }
         }
         return super.onOptionsItemSelected(item)

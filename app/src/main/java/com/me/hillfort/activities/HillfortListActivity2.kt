@@ -24,6 +24,7 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
     lateinit var app: MainApp
     var loginUser :String = ""
     var hf:List<HillfortModel>? = null
+    lateinit var userID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,7 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
 
         if (intent.hasExtra("id")) {
           //  var userID = intent.extras?.getParcelable<SettingsModel>("id")!!.toString()
-            var userID = intent.getStringExtra("id")
+            userID = intent.getStringExtra("id")
             loginUser = app.settings.findOneName(userID).toString()
         }
         val layoutManager = LinearLayoutManager(this)
@@ -93,7 +94,8 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
 
             R.id.item_settings -> {
                 toast("settings selected")
-                startActivityForResult<SettingsActivity>(0)
+              //  startActivityForResult<SettingsActivity>(0)
+                startActivityForResult(intentFor<SettingsActivity>().putExtra("id", userID),0)
             }
 
         }

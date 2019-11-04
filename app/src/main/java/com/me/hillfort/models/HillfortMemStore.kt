@@ -46,6 +46,16 @@ class HillfortMemStore : HillfortStore, SettingsStore, AnkoLogger {
         return foundSetting
     }
 
+    override fun findOnePassword(id: String) : String? {
+        var id_long = id.toLong()
+        var foundUser: SettingsModel? = settings.find { p -> p.id == id_long }
+        if (foundUser != null) {
+            return foundUser?.password
+        }
+        return "no User"
+    }
+
+
     override fun create(hillfort: HillfortModel) {
         hillfort.id = getId()
         hillforts.add(hillfort)

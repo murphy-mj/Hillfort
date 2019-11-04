@@ -30,10 +30,14 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.me.hillfort.R
 
 import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.maps.model.Marker
+import kotlinx.android.synthetic.main.activity_maps.*
 import org.jetbrains.anko.toast
 
 
-class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
+class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
+    GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener,
+    GoogleMap.OnMarkerDragListener, GoogleMap.OnMarkerClickListener {
 
     private lateinit var mMap: GoogleMap
 
@@ -56,6 +60,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.Co
         }
 
     var markerName:String = ""
+
+   // var location = Location()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,6 +107,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.Co
     override fun onMapReady(googleMap: GoogleMap) {
 
         mMap = googleMap
+        mMap.setOnMarkerDragListener(this)
+        mMap.setOnMarkerClickListener(this)
         // Add a marker in locMarker and move the camera, and set its title to the hillfort name
         val locMarker = LatLng(mLatitudeTextView.toDouble(),mLongitudeTextView.toDouble() )
         mMap.addMarker(MarkerOptions().position(locMarker).title("${markerName}"))
@@ -217,5 +225,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback, GoogleApiClient.Co
 
         private val TAG = "MapsActivity"
     }
+
+    override fun onMarkerDragStart(marker: Marker) {
+    }
+
+    override fun onMarkerDrag(marker: Marker) {
+    }
+
+    override fun onMarkerDragEnd(marker: Marker) {
+
+    }
+    override fun onMarkerClick(marker: Marker): Boolean {
+
+        return false
+    }
+
 
 }

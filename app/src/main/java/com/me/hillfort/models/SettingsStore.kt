@@ -10,4 +10,5 @@ interface SettingsStore {
     fun findOneEmail(email: String):SettingsModel?
     fun findOneID(OneSet: SettingsModel?):Long?
     fun findOneName(id: String) : String?
+    fun findOnePassword(id: String) : String?
 }

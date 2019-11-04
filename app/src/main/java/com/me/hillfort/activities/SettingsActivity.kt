@@ -29,7 +29,8 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
 
     var setting = SettingsModel()
     lateinit var app: MainApp
-
+    var loginUser:String = ""
+    var loginUserPassword:String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,15 +41,36 @@ class SettingsActivity : AppCompatActivity(), AnkoLogger {
 
         app = application as MainApp
 
+        if (intent.hasExtra("id")) {
+            //  var userID = intent.extras?.getParcelable<SettingsModel>("id")!!.toString()
+            var userID = intent.getStringExtra("id")
+            loginUser = app.settings.findOneName(userID).toString()
+            loginUserPassword = app.settings.findOnePassword(userID).toString()
+            settingEmail.setText(loginUser)
+            settingPassword.setText(loginUserPassword)
+            btnSetAdd.text = "UPDATE"
+
+        }
+
+
+
+
+
+
 
         btnSetAdd.setOnClickListener() {
             setting.email = settingEmail.text.toString()
             setting.password = settingPassword.text.toString()
             if (setting.email.isEmpty()|| setting.password.isEmpty())  {
                 toast(R.string.hint_settingsAll)
-            } else {
+                finish()
+            }
+            if (loginUser == "") {
                     app.settings.createSetting(setting.copy())
-                }
+                } else {
+                app.settings.updateSetting(setting.copy())
+            }
+
             info("add Button Pressed")
             setResult(AppCompatActivity.RESULT_OK)
             finish()

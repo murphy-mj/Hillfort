@@ -33,6 +33,9 @@ import java.util.*
 
 class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
 
+    // THis is the Stats Page
+
+
     var hillforts = mutableListOf<HillfortModel>()
 
     var hillfortsNotVisited = hillforts.toMutableList()

@@ -45,6 +45,7 @@ class SettingsJSONStore : SettingsStore, AnkoLogger {
         return foundUser
     }
 
+
     override fun findOneID(OneSet: SettingsModel?) : Long? {
         var foundUser: SettingsModel? = settings.find { p -> p.id == OneSet?.id }
         if (foundUser != null) {
@@ -59,6 +60,15 @@ class SettingsJSONStore : SettingsStore, AnkoLogger {
         var foundUser: SettingsModel? = settings.find { p -> p.id == id_long }
         if (foundUser != null) {
             return foundUser?.email
+        }
+        return "no User"
+    }
+
+    override fun findOnePassword(id: String) : String? {
+        var id_long = id.toLong()
+        var foundUser: SettingsModel? = settings.find { p -> p.id == id_long }
+        if (foundUser != null) {
+            return foundUser?.password
         }
         return "no User"
     }
@@ -79,6 +89,8 @@ class SettingsJSONStore : SettingsStore, AnkoLogger {
         }
         serialize()
     }
+
+
 
 
 
