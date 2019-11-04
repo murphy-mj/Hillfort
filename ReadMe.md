@@ -4,7 +4,29 @@ typora-root-url: Images
 
 The initial screen is a splash screen.
 
-![splash](/../1572801653600-1572893185494.png)
+![splash](..master/Image/1572801653600.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
