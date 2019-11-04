@@ -1,14 +1,16 @@
+---
+typora-root-url: Images
+---
+
 The initial screen is a splash screen.
 
-
-
-![splash](1572801653600.png)
+![splash](/../1572801653600-1572893185494.png)
 
 
 
 
 
-![login](1572802858209.png)
+![login](/../1572802858209-1572893229847.png)
 
 On Logging in to the App, the app provides a list of hillfort objects.
 
@@ -18,9 +20,9 @@ I tried to use tooltiptext, to provide a hint as to the object of each icon once
 
 
 
+![](/../1572803088539-1572893301336.png)
 
 
-![ListofHiilforts](1572803088539.png)
 
 
 
@@ -50,7 +52,7 @@ app.hillforts.findAll() method, which returns a list.
 
 To get the number of sit visited, a lamda function is used, and each hillforts  "visited_yn" boolean property is tested, and only those marked as true are added to a new collection, and the size of that collection, is used to populate the variable "numberVisited"
 
-![Stats](1572808177742.png)
+![stats](/../1572807346205.png)
 
 
 
@@ -60,9 +62,9 @@ there is a bug here when the button is clicked, rather than showing the list of 
 
 
 
+![addHillfort](/../1572811520268-1572893403701.png)
 
 
-![addHillfort](1572811520268.png)
 
 
 
@@ -76,15 +78,11 @@ The Add Image Button brings you an option to select an existing image from  the 
 
 
 
-![selectAction](1572811951180.png)
+![select-action](/../1572811951180-1572893434554.png)
 
 
 
-
-
-
-
-![Gallery](1572812279634.png)
+![gallery](/../1572812279634-1572893469271.png)
 
 
 
@@ -94,17 +92,21 @@ When Camera is chosen, permissions have to be given from user.
 
 
 
-![permission1](1572814674106.png)
+![permission1](/../1572814674106-1572893503257.png)
 
 
 
 
 
-![permission2](1572814728702.png)
+![permission2](/../1572814728702-1572893530799.png)
 
 
 
-![camera](1572814876218.png)
+
+
+![camera](/../1572814876218-1572893560195.png)
+
+
 
 
 
@@ -114,7 +116,9 @@ the photo is taken and saved to Gallery. To add the photo to the App, you need t
 
 
 
-![togglebutton](1572815472462.png)
+![togglebutton](/../1572815472462-1572893601202.png)
+
+
 
 
 
@@ -124,13 +128,23 @@ Press to select date, is used to select the date that the site was visited on.
 
 
 
-![date-picker](1572815624160.png)
+![date-picker](/../1572815624160-1572893641405.png)
 
 
 
 
 
-![delImage1](1572817827324.png)
+![deleteImage1](/../1572817827324-1572893673474.png)
+
+
+
+
+
+
+
+
+
+![deleteImage2](/../1572817933151-1572893706098.png)
 
 
 
@@ -138,19 +152,13 @@ To delete a Hillfort, it needs to be in edit mode, you you need to select the Hi
 
 
 
-![deleteimage2](1572817933151.png)
+![deleteImage3](/../1572817997662-1572893729078.png)
 
 
 
 
 
-in this example i have selected test3 hillfort.
-
-
-
-
-
-![post_delete](1572817997662.png)
+in this example I have deleted test3 hillfort.
 
 
 
@@ -174,3 +182,4 @@ val locMarker = LatLng(mLatitudeTextView.toDouble(),mLongitudeTextView.toDouble(
 
 
 
+![](/../1572801506949.png)
