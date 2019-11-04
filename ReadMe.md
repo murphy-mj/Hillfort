@@ -4,7 +4,7 @@ typora-root-url: Images
 
 The initial screen is a splash screen.
 
-![splash](..master/Image/1572801653600.png)
+![splash](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572801506949.png
 
 
 
@@ -12,27 +12,11 @@ The initial screen is a splash screen.
 
 
 
+![login](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572802858209.png
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-![login](/../1572802858209-1572893229847.png)
 
 On Logging in to the App, the app provides a list of hillfort objects.
 
@@ -42,7 +26,9 @@ I tried to use tooltiptext, to provide a hint as to the object of each icon once
 
 
 
-![](/../1572803088539-1572893301336.png)
+![ToolTipText](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572803088539.png
+
+
 
 
 
@@ -66,6 +52,10 @@ if(hillforts != null) {
    textView1.text = "Hi ${userEmail}"textView2.text = "This is the story so far. I ${userEmail} , have ${numberOfHillforts} in my collection. I have visited ${numberVisited} so far."
 ```
 
+
+
+
+
 The Stats page receives  the logged in person email through the intents extra.
 
 The list of all hillforts in the collection, is received through the mainApp.
@@ -74,17 +64,19 @@ app.hillforts.findAll() method, which returns a list.
 
 To get the number of sit visited, a lamda function is used, and each hillforts  "visited_yn" boolean property is tested, and only those marked as true are added to a new collection, and the size of that collection, is used to populate the variable "numberVisited"
 
-![stats](/../1572807346205.png)
+
+
+![stats](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572807346205.png
+
+
+
+
 
 
 
 there is a bug here when the button is clicked, rather than showing the list of not visited sites, it shows all sites.
 
-
-
-
-
-![addHillfort](/../1572811520268-1572893403701.png)
+![HillfortAdd](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572811520268.png
 
 
 
@@ -98,13 +90,17 @@ Where you enter the title, and description.
 
 The Add Image Button brings you an option to select an existing image from  the gallery or create a new photo.
 
+![SelectAction](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572811951180.png
 
 
-![select-action](/../1572811951180-1572893434554.png)
 
 
 
-![gallery](/../1572812279634-1572893469271.png)
+![Gallery](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572812279634.png
+
+
+
+
 
 
 
@@ -112,21 +108,21 @@ The Add Image Button brings you an option to select an existing image from  the 
 
 When Camera is chosen, permissions have to be given from user.
 
-
-
-![permission1](/../1572814674106-1572893503257.png)
-
+![Permission1](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572814674106.png
 
 
 
-
-![permission2](/../1572814728702-1572893530799.png)
+![Permission2](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572814728702.png
 
 
 
 
 
-![camera](/../1572814876218-1572893560195.png)
+
+
+![Camera](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572814876218.png
+
+
 
 
 
@@ -136,9 +132,9 @@ When Camera is chosen, permissions have to be given from user.
 
 the photo is taken and saved to Gallery. To add the photo to the App, you need to go into the Galley and attach from there.
 
+![ToggleButton](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572815472462.png
 
 
-![togglebutton](/../1572815472462-1572893601202.png)
 
 
 
@@ -150,13 +146,27 @@ Press to select date, is used to select the date that the site was visited on.
 
 
 
+![Date-Picker](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572815624160.png
+
+
+
+
+
 ![date-picker](/../1572815624160-1572893641405.png)
 
 
 
 
 
-![deleteImage1](/../1572817827324-1572893673474.png)
+![DeleteImage1](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572817827324.png
+
+
+
+
+
+
+
+![DeleteImage2](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572817933151.png
 
 
 
@@ -166,7 +176,7 @@ Press to select date, is used to select the date that the site was visited on.
 
 
 
-![deleteImage2](/../1572817933151-1572893706098.png)
+
 
 
 
@@ -174,7 +184,9 @@ To delete a Hillfort, it needs to be in edit mode, you you need to select the Hi
 
 
 
-![deleteImage3](/../1572817997662-1572893729078.png)
+![DeleteImage3](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572817997662.png
+
+
 
 
 
@@ -204,4 +216,7 @@ val locMarker = LatLng(mLatitudeTextView.toDouble(),mLongitudeTextView.toDouble(
 
 
 
-![](/../1572801506949.png)
+![LocationMarker](https://github.com/murphy-mj/Hillfort/blob/master/Images/1572801506949.png
+
+
+
