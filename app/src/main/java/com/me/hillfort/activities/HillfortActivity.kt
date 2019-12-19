@@ -132,7 +132,26 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             } else {
                 if (edit) {
                     app.hillforts.update(hillfort.copy())
+
                 } else {
+                    // store data to firestore database
+                    info("Firebase DB Reference : $app.database")
+                    toast("ADDING hillfort to ${app.auth.currentUser!!.uid}")
+                    val uid = app.auth.currentUser!!.uid
+                    val key = app.database.child("hillforts").push().key
+                    if (key == null) {
+                        info("Firebase Error : Key Empty")
+                        //return
+                    }
+                    hillfort.uid = key
+                    val hillfortValues = hillfort.toMap()
+                    val childUpdates = HashMap<String, Any>()
+                    childUpdates["/hillforts/$key"] = hillfortValues
+                    childUpdates["/user-hillforts/$uid/$key"] = hillfortValues
+                    app.database.updateChildren(childUpdates)
+                    //  hideLoader(loader)
+
+                    // keeping json data for ref
                     app.hillforts.create(hillfort.copy())
                 }
             }
@@ -141,6 +160,37 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             setResult(AppCompatActivity.RESULT_OK)
             finish()
         }
+
+         fun writeNewHillfort(copy: HillfortModel) {
+            // Create new donation at /donations & /donations/$uid
+          //  showLoader(loader, "Adding Donation to Firebase")
+            info("Firebase DB Reference : $app.database")
+            val uid = app.auth.currentUser!!.uid
+            val key = app.database.child("hillforts").push().key
+            if (key == null) {
+                info("Firebase Error : Key Empty")
+                return
+            }
+            hillfort.uid = key
+            val hillfortValues = hillfort.toMap()
+
+            val childUpdates = HashMap<String, Any>()
+            childUpdates["/hillforts/$key"] = hillfortValues
+            childUpdates["/user-hillforts/$uid/$key"] = hillfortValues
+
+            app.database.updateChildren(childUpdates)
+          //  hideLoader(loader)
+        }
+
+
+
+
+
+
+
+
+
+
 
         btnDel.setOnClickListener() {
             if (edit == false) {
@@ -182,6 +232,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
     }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_hillfort, menu)
