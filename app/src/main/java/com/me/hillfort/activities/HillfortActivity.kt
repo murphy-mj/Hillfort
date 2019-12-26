@@ -7,6 +7,7 @@ import android.app.DatePickerDialog
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.media.MediaScannerConnection
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
@@ -23,6 +24,10 @@ import android.widget.DatePicker
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
+import com.bumptech.glide.Glide
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import com.me.hillfort.activities.MapsActivity
 import com.me.hillfort.R
@@ -32,6 +37,7 @@ import com.me.hillfort.helpers.showImagePicker
 import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.Location
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.activities.ImageCaptureActivity
 import kotlinx.android.synthetic.main.activity_hillfort.hillfortDescription
 import kotlinx.android.synthetic.main.activity_hillfort.hillfortTitle
 import kotlinx.android.synthetic.main.activity_hillfort.hillfortImage
@@ -81,12 +87,11 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
         app = application as MainApp
-
         var del = false
         var visit: Boolean = false
 
         //chooseImage.setOnClickListener { askCameraPermission() }
-        chooseImage.setOnClickListener {showPictureDialog() }
+
 
 
 
@@ -100,26 +105,27 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             btnAdd.setText(R.string.button_updateHillfort)
             hillfortTitle.setText(hillfort.title)
             hillfortDescription.setText(hillfort.description)
-            hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
-            if (hillfort.image != null) {
+            Glide.with(this).load(hillfort.image).into(hillfortImage)
+          //  hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
+            if (hillfort.image == null) {
                 chooseImage.setText(R.string.button_selectImage)
                 toast(R.string.hint_hillfortImage)
             }
+
             location_lat.setText(hillfort.lat.toString())
             location_lat.setText(hillfort.lng.toString())
             hillfortToggleButton.setChecked(hillfort.visit_yn)
             date_text_view.setText(hillfort.visit_date)
-
 
             btnAdd.setText(R.string.button_saveHillfort)
             btnDel.setText(R.string.button_deleteHillfort)
         }
 
 
-
         btnAdd.setOnClickListener() {
             hillfort.title = hillfortTitle.text.toString()
             hillfort.description = hillfortDescription.text.toString()
+            hillfort.image = hillfortImage.toString()
             var visit:Boolean = hillfortToggleButton.isChecked()
             toast("visited is ${visit}")
             hillfort.visit_yn = visit
@@ -127,13 +133,22 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
          //   hillfort.lat = location_lat.text as Double
          //   hillfort.lng = location_lng.text as Double
           //  hillfort.visit_date = date_text_view.text.toString()
-            if (hillfort.title.isEmpty()) {
-                toast(R.string.hint_hillfortTitle)
-            } else {
-                if (edit) {
-                    app.hillforts.update(hillfort.copy())
 
-                } else {
+          //  if (hillfort.title.isEmpty()) {
+           //     toast(R.string.hint_hillfortTitle)
+           // } else {
+            if (edit) {
+                    // an existing edited version hillfort for saving
+                    app.hillforts.update(hillfort.copy())
+                if ((hillfort.image.length) > 0 && (hillfort.image[0] != 'h')) {
+                    updateImage(hillfort)
+                }
+
+                    app.database.child("user-hillforts").child(app.auth.currentUser!!.uid).child(hillfort.uid.toString()).setValue(hillfort)
+                    app.database.child("hillforts").child(hillfort.uid.toString()).setValue(hillfort)
+
+            } else {
+                    // new hillfort being presented storage
                     // store data to firestore database
                     info("Firebase DB Reference : $app.database")
                     toast("ADDING hillfort to ${app.auth.currentUser!!.uid}")
@@ -154,37 +169,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                     // keeping json data for ref
                     app.hillforts.create(hillfort.copy())
                 }
-            }
+           // }
             info("add Button Pressed: $hillfortTitle")
             toast(R.string.hint_hillfortTitle)
             setResult(AppCompatActivity.RESULT_OK)
             finish()
         }
-
-         fun writeNewHillfort(copy: HillfortModel) {
-            // Create new donation at /donations & /donations/$uid
-          //  showLoader(loader, "Adding Donation to Firebase")
-            info("Firebase DB Reference : $app.database")
-            val uid = app.auth.currentUser!!.uid
-            val key = app.database.child("hillforts").push().key
-            if (key == null) {
-                info("Firebase Error : Key Empty")
-                return
-            }
-            hillfort.uid = key
-            val hillfortValues = hillfort.toMap()
-
-            val childUpdates = HashMap<String, Any>()
-            childUpdates["/hillforts/$key"] = hillfortValues
-            childUpdates["/user-hillforts/$uid/$key"] = hillfortValues
-
-            app.database.updateChildren(childUpdates)
-          //  hideLoader(loader)
-        }
-
-
-
-
 
 
 
@@ -197,6 +187,32 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 finish()
             } else {
                 app.hillforts.remove(hillfort.copy())
+
+                val userId = app.auth.currentUser!!.uid
+
+                app.database.child("hillforts").child( hillfort.uid!!)
+                    .addListenerForSingleValueEvent(
+                        object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                snapshot.ref.removeValue()
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                info("Firebase Hillfort error : ${error.message}")
+                            }
+                        })
+
+                app.database.child("user-hillforts").child(userId).child( hillfort.uid!!)
+                    .addListenerForSingleValueEvent(
+                        object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                snapshot.ref.removeValue()
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                info("Firebase Donation error : ${error.message}")
+                            }
+                        })
+
                 info("delete Button Pressed: $hillfortTitle")
                 toast(R.string.toast_hillfortDeleted)
                 setResult(AppCompatActivity.RESULT_OK)
@@ -204,6 +220,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             }
 
         }
+
+        chooseImage.setOnClickListener {showPictureDialog() }
 
 
         date_text_view.setOnClickListener{
@@ -250,6 +268,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                     finish()
                 } else {
                     app.hillforts.remove(hillfort.copy())
+
                     toast(R.string.toast_hillfortDeleted)
                     setResult(AppCompatActivity.RESULT_OK)
                     finish()
@@ -259,7 +278,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         return super.onOptionsItemSelected(item)
     }
 
-
+var photoselectedURI :Uri? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -267,20 +286,36 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             GALLERY -> {
                 if (data != null) {
                     hillfort.image = data.getData().toString()
-                    hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-                    toast(hillfort.image.toString())
+                 //   hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+                    hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
+                    updateImage(hillfort)
+                //    toast("from GALLERY result " + hillfort.image.toString())
+                //    val photoselectedURI = data.data
+                //    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,photoselectedURI)
+                //    val bitmapDrawable = BitmapDrawable(bitmap)
+                //    hillfortImage.setBackgroundDrawable(bitmapDrawable)
+
+
                 }}
             CAMERA -> {
                     if (data != null) {
                         hillfort.image = data.getData().toString()
+                        updateImage(hillfort)
+                        val uri = data.data
+                        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver,uri)
+                        val bitmapDrawable = BitmapDrawable(bitmap)
+                        hillfortImage.setBackgroundDrawable(bitmapDrawable)
+
                         toast(hillfort.image.toString())
-                        hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+                      //  hillfortImage.setImageBitmap(readImage(this, resultCode, data))
+                 //       hillfortImage.setImageBitmap(readImageFromPath(this, hillfort.image))
                        // val thumbnail = data!!.extras!!.get("data") as Bitmap
                        // imageview!!.setImageBitmap(thumbnail)
-                      //  hillfortImage.setImageBitmap(thumbnail)
+                       // hillfortImage.setImageBitmap(thumbnail)
                        // hillfortImage.setImageBitmap(readImage(this, resultCode, data))
-                       // saveImage(thumbnail)
-                     //   Toast.makeText(this, "Image Saved!", Toast.LENGTH_SHORT).show()
+                       // saveImage(thumbnail: Bitmap)
+
+                        Toast.makeText(this, "Image Saved!", Toast.LENGTH_SHORT).show()
                     }
                 }
 
@@ -292,6 +327,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
     }
 
+
+    // select image button
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(this)
         pictureDialog.setTitle("Select Action")
@@ -311,20 +348,20 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
      fun choosePhotoFromGallary() {
          showImagePicker(this, GALLERY)
 
-        //val galleryIntent = Intent(Intent.ACTION_PICK,
-        //    MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        // val galleryIntent = Intent()
-        // galleryIntent.type = "image/*"
-        // galleryIntent.action = Intent.ACTION_OPEN_DOCUMENT
-        // galleryIntent.addCategory(Intent.CATEGORY_OPENABLE)
-       // startActivityForResult(galleryIntent, GALLERY)
+        val galleryIntent = Intent(Intent.ACTION_PICK,
+            MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+       //  galleryIntent = Intent()
+         galleryIntent.type = "image/*"
+         galleryIntent.action = Intent.ACTION_OPEN_DOCUMENT
+        galleryIntent.addCategory(Intent.CATEGORY_OPENABLE)
+        startActivityForResult(galleryIntent, GALLERY)
      }
 
 
      fun takePhotoFromCamera() {
          askCameraPermission()
-       // val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-       // startActivityForResult(intent, CAMERA)
+    //    val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+   //     startActivityForResult(intent, CAMERA)
     }
 
     private fun launchCamera() {
@@ -430,6 +467,34 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     }
 
+
+    fun updateImage(hillfort: HillfortModel) {
+        if (hillfort.image != "") {
+            val fileName = File(hillfort.image)
+            val imageName = fileName.getName()
+
+            var imageRef = app.storage.child(app.auth.currentUser!!.uid + '/' + imageName)
+            val baos = ByteArrayOutputStream()
+            val bitmap = readImageFromPath(this, hillfort.image)
+
+            bitmap?.let {
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                val data = baos.toByteArray()
+                val uploadTask = imageRef.putBytes(data)
+                uploadTask.addOnFailureListener {
+                    println(it.message)
+                }.addOnSuccessListener { taskSnapshot ->
+                    taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+                        hillfort.image = it.toString()
+                        app.database.child("user-hillforts").child(app.auth.currentUser!!.uid).child(hillfort.uid.toString()).setValue(hillfort)
+                        app.database.child("hillforts").child(hillfort.uid.toString()).setValue(hillfort)
+
+                       // app.database.child("user-hillforts").child(app.auth.currentUser!!.uid).child("hillforts").child(hillfort.uid.toString()).setValue(hillfort)
+                    }
+                }
+            }
+        }
+    }
 
 
 }

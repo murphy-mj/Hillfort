@@ -9,21 +9,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_hillfort_list2.*
 import kotlinx.android.synthetic.main.card_hillfort.view.*
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivityForResult
 import com.me.hillfort.R
 import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.HillfortModel
 import com.me.models.SettingsModel
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
+import java.util.ArrayList
 
-class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
+class HillfortListActivity2 : AppCompatActivity(), HillfortListener, AnkoLogger {
 
     lateinit var app: MainApp
     var loginUser :String = ""
-    var hf:List<HillfortModel>? = null
+   // val hf: List<HillfortModel>? = null
     lateinit var userID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,20 +42,60 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
         }
         val layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
-        toast("Welcome into listAct 2  $loginUser")
-        loadHillforts()
+        getAllUsersHillforts()
+       // recyclerView.adapter = HillfortAdapter(app.hillforts.findAll(), this)
+       // recyclerView.adapter = HillfortAdapter(hf, this)
+        toast("WELCOME into listAct 2  $loginUser")
+        //loadHillforts()
+
     }
 
     private fun loadHillforts() {
-        hf = app.hillforts.findAll()
-        showHillforts( hf!!)
+    //    hf = app.hillforts.findAll()
+     //   showHillforts( hf!!)
     }
 
-    fun showHillforts (hillforts: List<HillfortModel>) {
-        recyclerView.adapter = HillfortAdapter(hillforts, this)
-        recyclerView.adapter?.notifyDataSetChanged()
+    fun showHillforts (hillforts: ArrayList<HillfortModel>) {
+   //     recyclerView.adapter = HillfortAdapter(hillforts, this)
+    //    recyclerView.adapter?.notifyDataSetChanged()
     }
+
+    fun getAllUsersHillforts() {
+        //   loader = createLoader(activity!!)
+        //  showLoader(loader, "Downloading All Users Donations from Firebase")
+        val hillfortsList = ArrayList<HillfortModel>()
+
+        app.database.child("hillforts")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    info("Firebase Hillfort error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    //  hideLoader(loader)
+                    val children = snapshot.children
+                    children.forEach {
+                        val hillfort = it.getValue<HillfortModel>(HillfortModel::class.java)
+                        toast("getall users hillforts"+it)
+                        hillfortsList.add(hillfort!!)
+                      //  hf.add(hillfort!!)
+                        recyclerView.adapter =
+                             HillfortAdapter(hillfortsList, this@HillfortListActivity2)
+                        // HillfortAdapter(hf, this@HillfortListActivity2)
+
+
+                        recyclerView.adapter?.notifyDataSetChanged()
+                        //  checkSwipeRefresh()
+
+                        app.database.child("hillforts").removeEventListener(this)
+                    }
+                }
+            })
+    }
+
+
+
+
 
 
 
@@ -107,10 +149,18 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-      //  recyclerView.adapter?.notifyDataSetChanged()
-        loadHillforts()
+        recyclerView.adapter?.notifyDataSetChanged()
+        getAllUsersHillforts()
         super.onActivityResult(requestCode, resultCode, data)
     }
+
+    // optional
+    //   override fun onResume() {
+    //       super.onResume()
+    ///       getAllUsersHillforts()
+    //   }
+
+
 
  //   fun testCall(){
       // startActivityForResult<StatsActivity>(0)

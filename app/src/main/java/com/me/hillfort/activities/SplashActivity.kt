@@ -11,7 +11,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
-//import androidx.appcompat.app.AppCompatActivity
 import com.me.hillfort.R
 import com.me.hillfort.activities.LoginActivity
 import com.me.hillfort.login.LoginView

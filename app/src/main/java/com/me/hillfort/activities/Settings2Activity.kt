@@ -9,6 +9,9 @@ import android.view.MenuItem
 import android.view.*
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import kotlinx.android.synthetic.main.activity_settings.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -35,15 +38,16 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
 
     // THis is the Stats Page
 
-
     var hillforts = mutableListOf<HillfortModel>()
 
     var hillfortsNotVisited = hillforts.toMutableList()
+ //   var hillfortsNotVisited2 = hillfortList.toMutableList()
+
 
     lateinit var app: MainApp
-    var userEmail: String = ""
+    lateinit var userEmail: String
     var numberOfHillforts:Int = 0
-    var numberVisited : Int = 0
+    var numberVisited : Int =0
     var numberWithoutDescriptions:Int = 0
 //    var lastOneVisted? : Date = 1-1-2008
 
@@ -55,7 +59,7 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
         setSupportActionBar(toolbarStats)
         info("STATS Activity started..")
         app = application as MainApp
-
+   //    var hillfortList = mutableListOf<HillfortModel>()
 
 
 
@@ -64,13 +68,20 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
             userEmail = intent.getStringExtra("email")
         }
 
-        hillforts = app.hillforts.findAll().toMutableList()
+        //hillforts = app.hillforts.findAll().toMutableList()
+        getAllUsersHillforts2()
 
-        if(hillforts != null) {
-            numberOfHillforts = hillforts.size
-            numberVisited  = hillforts.filter {it.visit_yn}.size
+    //    toast("I'm Back SIZE Is EveryTHING ${hillfortList.size}")
+     //  if(hillfortList.isEmpty()) {
+    //        toast("its EMPTY, feck")
+       // } else {
+        //    numberOfHillforts = hillfortList.count()
+        //    numberVisited  = hillfortList.filter {it.visit_yn}.count()
+
+  //      hillfortList.forEach { info("${it.description}") }
+
           //  hillfortsNotVisited = hillforts.filter {it.visit_yn}.toMutableList()
-        }
+      //  }
         textView1.text = "Hi ${userEmail}"
         textView2.text = "This is the story so far. I ${userEmail} , have ${numberOfHillforts} in my collection. I have visited ${numberVisited} so far."
 
@@ -80,7 +91,7 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
 
             val layoutManager = LinearLayoutManager(this)
             recyclerView.layoutManager = layoutManager
-            recyclerView.adapter = HillfortAdapter(hillforts.filter {!it.visit_yn}.toMutableList(), this)
+       //     recyclerView.adapter = HillfortAdapter(hillforts.filter {!it.visit_yn}.toMutableArrayList(), this)
             recyclerView.adapter?.notifyDataSetChanged()
 
         }
@@ -119,5 +130,49 @@ class Settings2Activity : AppCompatActivity(), AnkoLogger, HillfortListener {
         startActivityForResult(intentFor<HillfortActivity>().putExtra("hillfort_edit", hillfort), 0)
     }
 
+
+
+    fun getAllUsersHillforts2() {
+        //toast("IN tHE MIDDLE of getallusersHillforts2")
+        //   loader = createLoader(activity!!)
+        //  showLoader(loader, "Downloading All Users Donations from Firebase")
+      //  val hillfortsList = ArrayList<HillfortModel>()
+
+        app.database.child("hillforts")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    info("Firebase Hillfort error : ${error.message}")
+                }
+
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    //  hideLoader(loader)
+                    val children = snapshot.children
+                    children.forEach {
+                        var hillfort = it.getValue<HillfortModel>(HillfortModel::class.java)
+
+                      //  hillfortList.add(hillfort!!)
+                        numberOfHillforts = numberOfHillforts + 1
+
+                        if(hillfort!!.visit_yn) {
+                            numberVisited = numberVisited+1
+                        }
+                        info("Vistited Hillfort : ${hillfort!!.visit_yn}")
+              //          info("First Hillfort Title : ${hillfortList[0]!!.title}")
+                        info("Number Hillfort  : ${ numberOfHillforts}")
+                        info("Number Hillfort visted  : ${ numberVisited}")
+                        //  hf.add(hillfort!!)
+                       // recyclerView.adapter =
+                         //   HillfortAdapter(hillfortList, this@HillfortListActivity2)
+                        // HillfortAdapter(hf, this@HillfortListActivity2)
+
+
+                       // recyclerView.adapter?.notifyDataSetChanged()
+                        //  checkSwipeRefresh()
+
+                        app.database.child("hillforts").removeEventListener(this)
+                    }
+                }
+            })
+    }
 
 }

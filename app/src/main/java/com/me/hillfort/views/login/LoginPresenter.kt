@@ -18,6 +18,7 @@ import org.jetbrains.anko.toast
 //import com.me.hillfort.utils.showLoader
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
 import com.me.hillfort.views.BasePresenter
 import com.me.hillfort.views.BaseView
 
@@ -48,8 +49,10 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
       //  Log.d(TAG, "signInWithEmail:success")
     //
         view?.toast("Sign Up OK")
+   //
         val user = app.auth.currentUser
         app.database = FirebaseDatabase.getInstance().reference
+        app.storage = FirebaseStorage.getInstance().reference
 
           view?.navigateTo(VIEW.HOME)
        // }
