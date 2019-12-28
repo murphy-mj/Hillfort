@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.card_hillfort.view.*
 import com.me.hillfort.R
 import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.views.map.PlacemarkMapView
 import com.me.models.SettingsModel
 import org.jetbrains.anko.*
 import java.util.ArrayList
@@ -137,7 +138,9 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener, AnkoLogger 
             R.id.item_settings -> {
                 toast("settings selected")
               //  startActivityForResult<SettingsActivity>(0)
-                startActivityForResult(intentFor<SettingsActivity>().putExtra("id", userID),0)
+             //   startActivityForResult(intentFor<SettingsActivity>().putExtra("id", userID),0)
+             //   startActivityForResult(intentFor<PlacemarkMapView>().putExtra("id", userID),0)
+                startActivityForResult<PlacemarkMapView>(0)
             }
 
         }
@@ -145,7 +148,7 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener, AnkoLogger 
     }
 
     override fun onHillfortClick(hillfort: HillfortModel) {
-        startActivityForResult(intentFor<HillfortActivity>().putExtra("hillfort_edit", hillfort), 0)
+        startActivityForResult(intentFor<PlacemarkMapView>().putExtra("hillfort_edit", hillfort), 0)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

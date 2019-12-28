@@ -28,13 +28,15 @@
     <string name="menutt_settings">to view and update user Info</string>
     <string name="menu_stats">Stats</string>
     <string name="menutt_stats">to view stats</string>
-
+    <string name="menu_saveHillfort">Save</string>
+    <string name="menutt_saveHillfort">to view save</string>
+    <string name="menu_location">Location</string>
+    <string name="menutt_locationt">to view Location</string>
 
     <string name="button_addImage"> Add Image </string>
     <string name="button_selectImage">Select Image</string>
     <string name="button_saveImage">Save Image</string>
     <string name="togglebutton">Site Visted</string>
-
 
     <string name="button_addHillfort"> Add Hillfort </string>
     <string name="button_saveHillfort"> Save Hillfort </string>
@@ -60,6 +62,13 @@
     <string name="button_date_Visited">Press to select Date </string>
     <string name="title_activity_maps">Map</string>
 
-
+    <string name="placemark_image_placeholder">Placemark Imagee</string>
+    <string name="placemark_title_placeholder">Placemark Title</string>
+    <string name="placemark_description_placeholder">Placemark Description</string>
+    <string name="select_placemark_image">Select placemark image</string>
+    <string name="change_placemark_image">Change placemark image</string>
+    <string name="enter_placemark_title"> Please enter a Placemark Title </string>
+    <string name="save_placemark"> Save Placemark </string>
+    <string name="menu_showMap">Show Map</string>
 
 </resources>

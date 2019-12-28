@@ -1,4 +1,4 @@
-package com.me.hillfort.login
+package com.me.hillfort.views.login
 
 import android.os.Bundle
 import android.view.View

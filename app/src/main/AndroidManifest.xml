@@ -44,6 +44,8 @@
         <activity android:name=".activities.ImageCaptureActivity"/>
         <activity android:name=".activities.HillfortListActivity2"/>
         <activity android:name=".activities.LoginActivity"/>
+
+
         <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,7 +53,16 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".login.LoginView"/>
+        <activity android:name=".views.login.LoginView"/>
+        <activity
+            android:name=".views.hillfort.PlacemarkView"/>
+
+        <activity
+            android:name=".views.editlocation.EditLocationView"/>
+        <activity
+            android:name=".views.map.PlacemarkMapView"/>
+        <activity
+            android:name=".views.hillfortlist.PlacemarkListView"/>
 
     </application>
 

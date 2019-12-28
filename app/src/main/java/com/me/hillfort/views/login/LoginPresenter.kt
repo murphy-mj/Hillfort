@@ -19,45 +19,37 @@ import org.jetbrains.anko.toast
 import android.util.Log
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
+import com.me.hillfort.models.firebase.PlacemarkFireStore
 import com.me.hillfort.views.BasePresenter
 import com.me.hillfort.views.BaseView
 
 class LoginPresenter(view: BaseView) : BasePresenter(view) {
 
- // lateinit var app: MainApp
-//  var auth: FirebaseAuth = FirebaseAuth.getInstance()
- // var fireStore: PlacemarkFireStore? = null
+  var auth: FirebaseAuth = FirebaseAuth.getInstance()
+  var fireStore: PlacemarkFireStore? = null
 
- // init {
- //  if (app.placemarks is PlacemarkFireStore) {
- //     fireStore = app.placemarks as PlacemarkFireStore
- //   }
- // }
+  init {
+   if (app.pObj is PlacemarkFireStore) {
+      fireStore = app.pObj as PlacemarkFireStore
+    }
+  }
 
   fun doLogin(email: String, password: String) {
 
    // view?.showProgress()
-    app.auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
+    auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
       if (task.isSuccessful) {
-      //  if (fireStore != null) {
-        //  fireStore!!.fetchPlacemarks {
-        //    view?.hideProgress()
-        //    view?.navigateTo(VIEW.HOME)
-        //  }
-       // } else {
-         // view?.hideProgress()
-      //  Log.d(TAG, "signInWithEmail:success")
-    //
-        view?.toast("Sign Up OK")
-   //
-        val user = app.auth.currentUser
-        app.database = FirebaseDatabase.getInstance().reference
-        app.storage = FirebaseStorage.getInstance().reference
-
-          view?.navigateTo(VIEW.HOME)
-       // }
+        if (fireStore != null) {
+          fireStore!!.fetchPlacemarks {
+            //view?.hideProgress()
+            view?.navigateTo(VIEW.LIST)
+          }
+        } else {
+          // view?.hideProgress()
+          view?.navigateTo(VIEW.LIST)
+        }
       } else {
-     //   view?.hideProgress()
+        // view?.hideProgress()
         view?.toast("Sign Up Failed: ${task.exception?.message}")
       }
     }
@@ -67,10 +59,10 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
     view?.showProgress()
     app.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
       if (task.isSuccessful) {
-        view?.hideProgress()
+        // view?.hideProgress()
         view?.navigateTo(VIEW.HOME)
       } else {
-        view?.hideProgress()
+        // view?.hideProgress()
         view?.toast("Sign Up Failed: ${task.exception?.message}")
       }
     }

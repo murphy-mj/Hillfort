@@ -37,8 +37,16 @@
         android:tooltipText="@string/menutt_logout"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/item_map"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="@string/menu_showMap"
+        app:showAsAction="never"/>
 
-
+    <item
+        android:id="@+id/item_location"
+        android:title="@string/menu_location"
+        app:showAsAction="never"/>
 
 
 </menu>

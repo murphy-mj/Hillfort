@@ -14,7 +14,8 @@ import kotlinx.android.synthetic.main.activity_hillfort.view.*
 import kotlinx.android.synthetic.main.card_hillfort.view.hillfortIcon
 import kotlinx.android.synthetic.main.card_hillfort.view.hillfortTitle
 import kotlinx.android.synthetic.main.card_hillfort.view.hillfortDescription
-
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 
 
 interface HillfortListener {
@@ -22,9 +23,10 @@ interface HillfortListener {
 }
 
 class HillfortAdapter constructor(private var hillforts: ArrayList<HillfortModel>,
-                                   private val listener: HillfortListener) : RecyclerView.Adapter<HillfortAdapter.MainHolder>() {
+                                   private val listener: HillfortListener) : RecyclerView.Adapter<HillfortAdapter.MainHolder>(),AnkoLogger {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
+        info("In Activity Hillfort Adapter  hillforts size ${hillforts.size}")
         return MainHolder(LayoutInflater.from(parent?.context).inflate(R.layout.card_hillfort, parent, false))
     }
 

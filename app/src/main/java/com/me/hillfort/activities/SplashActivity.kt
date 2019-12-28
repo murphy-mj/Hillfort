@@ -12,8 +12,7 @@ import android.os.Handler
 import android.view.Window
 import android.view.WindowManager
 import com.me.hillfort.R
-import com.me.hillfort.activities.LoginActivity
-import com.me.hillfort.login.LoginView
+import com.me.hillfort.views.login.LoginView
 
 class SplashActivity : AppCompatActivity() {
 
@@ -31,7 +30,7 @@ class SplashActivity : AppCompatActivity() {
       overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out)
       // Close this activity
       finish()
-    }, 6000)
+    }, 3000)
 
   }
 

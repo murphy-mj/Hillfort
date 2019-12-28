@@ -25,6 +25,9 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat.startActivityForResult
 import com.bumptech.glide.Glide
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -53,6 +56,9 @@ import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
+import kotlinx.android.synthetic.main.activity_hillfort.toolbarAdd
+import kotlinx.android.synthetic.main.activity_hillfort2.*
+import kotlinx.android.synthetic.main.activity_maps.*
 import java.text.SimpleDateFormat
 import java.util.logging.Logger
 
@@ -80,7 +86,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hillfort)
+        setContentView(R.layout.activity_hillfort2)
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
         info("Hillfort Activity started..")
@@ -101,8 +107,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfort = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
 
             chooseImage.setText(R.string.button_selectImage)
-            hillfortLocation.setText(R.string.button_updateLocation)
-            btnAdd.setText(R.string.button_updateHillfort)
+            hillfortLocation2.setText(R.string.button_updateLocation)
+            btnAdd2.setText(R.string.button_updateHillfort)
             hillfortTitle.setText(hillfort.title)
             hillfortDescription.setText(hillfort.description)
             Glide.with(this).load(hillfort.image).into(hillfortImage)
@@ -112,24 +118,24 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 toast(R.string.hint_hillfortImage)
             }
 
-            location_lat.setText(hillfort.lat.toString())
-            location_lat.setText(hillfort.lng.toString())
-            hillfortToggleButton.setChecked(hillfort.visit_yn)
-            date_text_view.setText(hillfort.visit_date)
+           // location_lat.setText(hillfort.lat.toString())
+           // location_lat.setText(hillfort.lng.toString())
+            hillfortToggleButton2.setChecked(hillfort.visit_yn)
+            date_text_view2.setText(hillfort.visit_date)
 
-            btnAdd.setText(R.string.button_saveHillfort)
-            btnDel.setText(R.string.button_deleteHillfort)
+            btnAdd2.setText(R.string.button_updateHillfort)
+            btnDel2.setText(R.string.button_deleteHillfort)
         }
 
 
-        btnAdd.setOnClickListener() {
+        btnAdd2.setOnClickListener() {
             hillfort.title = hillfortTitle.text.toString()
             hillfort.description = hillfortDescription.text.toString()
             hillfort.image = hillfortImage.toString()
-            var visit:Boolean = hillfortToggleButton.isChecked()
+            var visit:Boolean = hillfortToggleButton2.isChecked()
             toast("visited is ${visit}")
             hillfort.visit_yn = visit
-            hillfort.visit_date = date_text_view.text.toString()
+            hillfort.visit_date = date_text_view2.text.toString()
          //   hillfort.lat = location_lat.text as Double
          //   hillfort.lng = location_lng.text as Double
           //  hillfort.visit_date = date_text_view.text.toString()
@@ -157,8 +163,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                     if (key == null) {
                         info("Firebase Error : Key Empty")
                         //return
+                    } else {
+                        hillfort.uid = key
                     }
-                    hillfort.uid = key
                     val hillfortValues = hillfort.toMap()
                     val childUpdates = HashMap<String, Any>()
                     childUpdates["/hillforts/$key"] = hillfortValues
@@ -182,7 +189,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
 
 
-        btnDel.setOnClickListener() {
+        btnDel2.setOnClickListener() {
             if (edit == false) {
                 finish()
             } else {
@@ -224,18 +231,18 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         chooseImage.setOnClickListener {showPictureDialog() }
 
 
-        date_text_view.setOnClickListener{
+        date_text_view2.setOnClickListener{
             val today = Calendar.getInstance()
             DatePickerDialog(this, object: DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(p0: DatePicker?, yyyy: Int, mm: Int, dd: Int) {
                     val selected = Date(yyyy-1900, mm, dd) // Create a date object with offset.
-                    date_text_view.text = selected.toString() // Display the selected date, or do whatever.
+                    date_text_view2.text = selected.toString() // Display the selected date, or do whatever.
                 }
             }, today.get(Calendar.YEAR), today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH)).show()
         }
 
 
-        hillfortLocation.setOnClickListener {
+        hillfortLocation2.setOnClickListener {
             validatePermission()
             startActivity (intentFor<MapsActivity>().putExtra("name", hillfort.title))
 
@@ -495,6 +502,14 @@ var photoselectedURI :Uri? = null
             }
         }
     }
-
+    fun locationUpdate(location: Location) {
+        hillfort.location = location
+        hillfort.location.zoom = 15f
+ //       map?.clear()
+        val options = MarkerOptions().title(hillfort.title).position(LatLng(hillfort.location.lat, hillfort.location.lng))
+ //       map?.addMarker(options)
+ //       map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(hillfort.location.lat, hillfort.location.lng), hillfort.location.zoom))
+ //       view?.showLocation(hillfort.location)
+    }
 
 }

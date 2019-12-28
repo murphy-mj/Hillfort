@@ -1,23 +1,22 @@
 package com.me.hillfort.models
 
-import com.google.firebase.database.Exclude
 import android.os.Parcelable
+import com.google.firebase.database.Exclude
 import kotlinx.android.parcel.Parcelize
-import java.util.*
+import com.google.firebase.database.IgnoreExtraProperties
 
 
 @Parcelize
-data class HillfortModel(var uid: String? = "",
-                         var id: Long = 0,
+data class HillfortModel(var uid: String = "",
+                          var id: Long = 0,
                           var title: String = "",
                           var description: String = "",
                           var image: String = "",
                           var profilepic: String = "",
-                          var lat : Double = 0.0,
-                          var lng: Double = 0.0,
-                          var zoom: Float = 15f,
                           var visit_date:String = "na",
-                          var visit_yn: Boolean = false ) : Parcelable {
+                          var visit_yn: Boolean = false,
+                          var location : Location = Location()
+                         ) : Parcelable {
     @Exclude
     fun toMap(): Map<String, Any?> {
         return mapOf(
@@ -27,11 +26,9 @@ data class HillfortModel(var uid: String? = "",
             "description" to description,
             "image" to image,
             "profilepic" to profilepic,
-            "lat" to lat,
-            "lng" to lng,
-            "zoom" to zoom,
             "visit_date" to visit_date,
-            "visit_yn" to visit_yn
+            "visit_yn" to visit_yn,
+             "location" to location
         )
     }
 }
