@@ -79,7 +79,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 // add note for commit
     var fileUri: Uri? = null
 
-    //   var location:Location = { if (location?.lat == 0.0 && location?.lng == 0.0 ){ location = Location(52.245696, -7.139102, 15f) }}
+    ///   var location:Location = { if (location?.lat == 0.0 && location?.lng == 0.0 ){ location = Location(52.245696, -7.139102, 15f) }}
     var location = Location(52.245696, -7.139102, 15f)
     var markerName:String = ""
     var edit = false
