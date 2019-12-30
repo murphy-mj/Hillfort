@@ -9,10 +9,11 @@ import com.me.hillfort.main.MainApp
 import com.me.hillfort.views.BasePresenter
 import com.me.hillfort.views.BaseView
 import com.me.hillfort.views.VIEW
-import org.jetbrains.anko.doAsync
+//import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import com.me.hillfort.models.HillfortModel
 import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.async
 import org.jetbrains.anko.info
 import java.util.ArrayList
 
@@ -34,6 +35,11 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
     view?.navigateTo(VIEW.MAPS)
   }
 
+  fun doShowPlacemarkNavMap() {
+    view?.navigateTo(VIEW.NAVIGATOR)
+  }
+
+
  // fun loadPlacemarks() {
  //   doAsync {
  //   //  val placemarks = app.placemarks.findAll()
@@ -48,7 +54,7 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
 
 
   fun loadPlacemarks() {
-    doAsync {
+    async {
       val placemarks = app.pObj.findAll()
       uiThread {
         view?.showPlacemarks(placemarks)
@@ -63,12 +69,15 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
   }
 
 
+
+
+
  // fun getAllUsersHillforts(): List<HillfortModel> {
 
 
   fun loadPlacemarks2(app : MainApp) {
     info("In Load placemarks in List Presenter ")
-    doAsync {
+    async {
       //  var hillfortList = ArrayList<HillfortModel>()
       val hillfortList: MutableList<HillfortModel> = mutableListOf()
       val hillfortList2: MutableList<HillfortModel> = mutableListOf()

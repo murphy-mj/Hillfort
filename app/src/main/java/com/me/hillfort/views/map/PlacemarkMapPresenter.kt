@@ -15,11 +15,12 @@ import com.me.hillfort.views.BasePresenter
 import com.me.hillfort.views.BaseView
 import kotlinx.android.synthetic.main.activity_hillfort_list2.*
 import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.doAsync
+//import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.info
 import org.jetbrains.anko.uiThread
 import java.util.*
 import com.me.hillfort.models.Location
+import org.jetbrains.anko.async
 
 class PlacemarkMapPresenter(view: BaseView) : BasePresenter(view), AnkoLogger {
 
@@ -39,7 +40,7 @@ class PlacemarkMapPresenter(view: BaseView) : BasePresenter(view), AnkoLogger {
 
   fun doMarkerSelected(marker: Marker) {
     //val tag = marker.tag as Long
-    doAsync {
+    async {
       val placemark = marker.getTag() as HillfortModel
       info("In Marker Selected  ${placemark.title}")
       uiThread {
@@ -49,7 +50,7 @@ class PlacemarkMapPresenter(view: BaseView) : BasePresenter(view), AnkoLogger {
   }
 
   fun loadPlacemarks() {
-    doAsync {
+    async {
       val placemarks = app.pObj.findAll()
       uiThread {
         info("load hillforts : ${placemarks.size}")

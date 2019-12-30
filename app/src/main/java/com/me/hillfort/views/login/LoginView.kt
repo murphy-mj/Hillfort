@@ -43,7 +43,7 @@ class LoginView : BaseView() {
       val email = email_user.text.toString()
       val password = password_user.text.toString()
       if (email == "" || password == "") {
-        toast("Please provide email + password")
+      //  toast("Please provide email + password")
       } else {
         presenter.doSignUp(email, password)
       }
@@ -53,7 +53,7 @@ class LoginView : BaseView() {
       val email = email_user.text.toString()
       val password = password_user.text.toString()
       if (email == "" || password == "") {
-        toast("Please provide email + password")
+    //   toast("Please provide email + password")
       } else {
         presenter.doLogin(email, password)
       }

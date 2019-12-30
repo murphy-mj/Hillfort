@@ -63,6 +63,8 @@
             android:name=".views.map.PlacemarkMapView"/>
         <activity
             android:name=".views.hillfortlist.PlacemarkListView"/>
+        <activity
+            android:name=".views.navigator.NavigatorMapView"/>
 
     </application>
 

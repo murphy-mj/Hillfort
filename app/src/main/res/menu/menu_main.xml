@@ -47,6 +47,9 @@
         android:id="@+id/item_location"
         android:title="@string/menu_location"
         app:showAsAction="never"/>
-
+    <item
+        android:id="@+id/item_navigator"
+        android:title="Navigate"
+        app:showAsAction="never"/>
 
 </menu>

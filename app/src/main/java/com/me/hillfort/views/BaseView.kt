@@ -18,13 +18,14 @@ import com.me.hillfort.views.hillfort.PlacemarkView
 import com.me.hillfort.views.hillfortlist.PlacemarkListView
 import com.me.hillfort.views.login.LoginView
 import com.me.hillfort.views.map.PlacemarkMapView
+import com.me.hillfort.views.navigator.NavigatorMapView
 
 
 val IMAGE_REQUEST = 1
 val LOCATION_REQUEST = 2
 
 enum class VIEW {
-  LOCATION, PLACEMARK, MAPS, LIST, LOGIN, HOME, HOMEREPORT
+  LOCATION, PLACEMARK, MAPS, LIST, LOGIN, HOME, NAVIGATOR, HOMEREPORT
 }
 
 open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
@@ -43,6 +44,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
       VIEW.MAPS -> intent = Intent(this, PlacemarkMapView::class.java)
       VIEW.LIST -> intent = Intent(this, PlacemarkListView::class.java)
       VIEW.HOME -> intent = Intent(this, PlacemarkListView::class.java)
+      VIEW.NAVIGATOR -> intent = Intent(this, NavigatorMapView::class.java)
     //  VIEW.HOME -> intent = Intent(this, HillfortActivity2::class.java)
       VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)
     }

@@ -12,13 +12,14 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.me.hillfort.helpers.*
 import com.me.hillfort.views.*
-import org.jetbrains.anko.doAsync
+//import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import com.me.hillfort.helpers.isPermissionGranted
 import com.me.hillfort.helpers.showImagePicker
 import com.me.hillfort.models.HillfortModel
 import com.me.hillfort.models.Location
 import com.me.hillfort.views.*
+import org.jetbrains.anko.async
 
 class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
 
@@ -91,7 +92,7 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
   fun doAddOrSave(title: String, description: String) {
     placemark.title = title
     placemark.description = description
-    doAsync {
+    async {
       if (edit) {
        app.pObj.update(placemark)
       } else {
@@ -108,7 +109,7 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
   }
 
   fun doDelete() {
-    doAsync {
+    async {
       app.pObj.delete(placemark)
       uiThread {
         view?.finish()
