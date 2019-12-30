@@ -68,7 +68,11 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
     view?.navigateTo(VIEW.LOGIN)
   }
 
+  fun doShowPlacemarkSearch() {
+    info("In List Presenter, heading for View SEARCH")
+    view?.navigateTo(VIEW.SEARCH)
 
+  }
 
 
 

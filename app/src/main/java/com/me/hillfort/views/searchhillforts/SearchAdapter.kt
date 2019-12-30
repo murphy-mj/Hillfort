@@ -20,7 +20,7 @@ interface PlacemarkListener {
   fun onPlacemarkClick(placemark: HillfortModel)
 }
 
-class SearchAdapter constructor(private var placemarks: List<HillfortModel>,
+class SearchAdapter constructor(private var placemarks: ArrayList<HillfortModel>,
                                    private val listener: PlacemarkListener
 ) : RecyclerView.Adapter<SearchAdapter.MainHolder>(),AnkoLogger {
 
@@ -37,7 +37,7 @@ class SearchAdapter constructor(private var placemarks: List<HillfortModel>,
 
 
   override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
-      info("In PlacemarkAdapter  placemarks size ${placemarks.size}")
+      info("In SearchAdapter  placemarks size ${placemarks.size}")
     return MainHolder(
         LayoutInflater.from(parent?.context).inflate(
             R.layout.card_hillfort,
@@ -58,7 +58,7 @@ class SearchAdapter constructor(private var placemarks: List<HillfortModel>,
 
     fun bind(placemark: HillfortModel, listener: PlacemarkListener) {
       itemView.hillfortTitle.text = placemark.title
-      itemView.hillfortDescription.text = placemark.description
+   //   itemView.hillfortDescription.text = placemark.description
       Glide.with(itemView.context).load(placemark.image).into(itemView.hillfortIcon);
       itemView.setOnClickListener { listener.onPlacemarkClick(placemark) }
     }
@@ -69,9 +69,9 @@ class SearchAdapter constructor(private var placemarks: List<HillfortModel>,
     fun filter(charText: String) {
         var charText = charText
         charText = charText.toLowerCase(Locale.getDefault())
-       // SearchHView.imageModelArrayList.clear()
-       // SearchHView.
+        SearchHView.imageModelArrayList.clear()
         if (charText.length == 0) {
+         //   SearchHView.imageModelArrayList.addAll(arraylist)
             SearchHView.imageModelArrayList.addAll(arraylist)
         } else {
             for (wp in arraylist) {

@@ -24,6 +24,10 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
   fun findAll(): List<HillfortModel> {
     return placemarks
   }
+  fun findAll2(): ArrayList<HillfortModel> {
+    return placemarks
+  }
+
 
   fun findById(id: Long): HillfortModel? {
     val foundPlacemark: HillfortModel? = placemarks.find { p -> p.id == id }

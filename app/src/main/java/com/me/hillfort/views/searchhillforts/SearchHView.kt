@@ -20,6 +20,8 @@ import kotlinx.android.synthetic.main.activity_searchview.view.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import org.jetbrains.anko.async
+import org.jetbrains.anko.uiThread
 
 class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQueryTextListener,
     android.widget.SearchView.OnQueryTextListener {
@@ -32,23 +34,25 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // info("In placemarks List View create")
+        info("In Search H View create")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_searchview)
         //   super.init(toolbar, false)
         app = application as MainApp
         presenter = initPresenter(SearchHPresenter(this)) as SearchHPresenter
-        //imageModelArrayList = mutableListOf()
-        imageModelArrayList = ArrayList()
         recyclerView as RecyclerView
-        val layoutManager = LinearLayoutManager(this)
-        recyclerView.layoutManager = layoutManager
+      //  imageModelArrayList = ArrayList()
+        async {
+            presenter.loadPlacemarks()
+            uiThread {
+            }
+        }
+            adapter = SearchAdapter(imageModelArrayList, this)
+            recyclerView!!.adapter = adapter
+            val layoutManager = LinearLayoutManager(this)
+            recyclerView.layoutManager = layoutManager
 
-        presenter.loadPlacemarks()
-
-        // search_id.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-        //search_id as SearchView
-        search_id.setOnQueryTextListener(this)
+            search_id.setOnQueryTextListener(this)
 
 
     }
@@ -58,14 +62,16 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
 
 
         override fun onQueryTextChange(newText: String): Boolean {
+            info("in on Query Txt Change in Search H View")
             adapter!!.filter(newText)
             return false
         }
 
 
-    override fun showPlacemarks(placemarks: List<HillfortModel>) {
-        info("In SHOW placemarks in List View ")
-        info("In SHOW placemarks in List View placemarks size is  ${placemarks.size}")
+    override fun showPlacemarks(placemarks: ArrayList<HillfortModel>) {
+        info("In SHOW placemarks in Search View ")
+        info("In SHOW placemarks in Search View placemarks size is  ${placemarks.size}")
+        info("In SHOW placemarks in Search View imagemodel size is  ${imageModelArrayList.size}")
         recyclerView.adapter = SearchAdapter(placemarks, this)
         recyclerView.adapter?.notifyDataSetChanged()
     }
@@ -77,6 +83,7 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        info("Search View on Activity Result ")
         presenter.loadPlacemarks()
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -88,6 +95,7 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        info("Search View onOptions menu selected ")
         when (item?.itemId) {
             R.id.item_search -> presenter.doShowPlacemarkSearch()
             R.id.item_logout -> presenter.doLogout()

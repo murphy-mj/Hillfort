@@ -90,6 +90,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
 
   open fun showPlacemark(placemark: HillfortModel) {}
   open fun showPlacemarks(placemarks: List<HillfortModel>) {}
+  open fun showPlacemarks(placemarks: ArrayList<HillfortModel>) {}
   open fun showLocation(location : Location) {}
   open fun showProgress() {}
   open fun hideProgress() {}

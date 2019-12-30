@@ -55,6 +55,7 @@ class PlacemarkListView :  BaseView(), PlacemarkListener {
       R.id.item_add -> presenter.doAddPlacemark()
       R.id.item_map -> presenter.doShowPlacemarksMap()
       R.id.item_navigator -> presenter.doShowPlacemarkNavMap()
+      R.id.item_search -> presenter.doShowPlacemarkSearch()
       R.id.item_logout -> presenter.doLogout()
     }
     return super.onOptionsItemSelected(item)
