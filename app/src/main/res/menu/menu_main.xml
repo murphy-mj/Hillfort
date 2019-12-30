@@ -48,8 +48,13 @@
         android:title="@string/menu_location"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/item_navigator"
-        android:title="Navigate"
+    android:id="@+id/item_navigator"
+    android:title="Navigate"
+    app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/item_search"
+        android:title="Search"
         app:showAsAction="never"/>
 
 </menu>
