@@ -6,10 +6,6 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
-import com.me.hillfort.activities.HillfortActivity
-import com.me.hillfort.activities.HillfortListActivity2
-import com.me.hillfort.activities.Home
-import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.HillfortModel
 import org.jetbrains.anko.AnkoLogger
 import com.me.hillfort.models.Location

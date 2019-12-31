@@ -6,4 +6,11 @@
     <color name="colorPGreen">#82F707</color>
     <color name= "colorPBlue">#03C9FA</color>
 
+    <color name="ic_launcher_homer_background">#FFFFFF</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="grey_100">#2196F3</color>
+    <color name="grey_300">#E0E0E0</color>
+    <color name="grey_500">#9E9E9E</color>
+
 </resources>

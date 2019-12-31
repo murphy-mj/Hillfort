@@ -1,24 +1,15 @@
 package com.me.hillfort.views.login
 
-import androidx.core.content.ContextCompat.startActivity
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 //import com.google.firebase.database.FirebaseDatabase
 //import com.google.firebase.storage.FirebaseStorage
-import com.me.hillfort.R
-import com.me.hillfort.activities.Home
-import com.me.hillfort.main.MainApp
 //import com.me.hillfort.models.firebase.PlacemarkFireStore
 //import com.me.hillfort.utils.hideLoader
 import com.me.hillfort.views.VIEW
-import com.me.hillfort.views.*
 import org.jetbrains.anko.toast
 //import com.me.hillfort.utils.createLoader
 //import com.me.hillfort.utils.hideLoader
 //import com.me.hillfort.utils.showLoader
-import android.util.Log
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.FirebaseStorage
 import com.me.hillfort.models.firebase.PlacemarkFireStore
 import com.me.hillfort.views.BasePresenter
 import com.me.hillfort.views.BaseView
