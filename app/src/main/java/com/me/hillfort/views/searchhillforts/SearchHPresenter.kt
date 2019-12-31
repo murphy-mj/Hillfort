@@ -7,6 +7,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import com.me.hillfort.main.MainApp
+import com.me.hillfort.models.HillfortModel
 import com.me.hillfort.views.BasePresenter
 import com.me.hillfort.views.BaseView
 import com.me.hillfort.views.VIEW
@@ -40,6 +41,19 @@ class SearchHPresenter(view: BaseView) : BasePresenter(view), AnkoLogger {
         view?.navigateTo(VIEW.SEARCH)
 
     }
+
+    fun doShowPlacemark(placemark : HillfortModel) {
+        info("In Search Presenter, heading for View EDit")
+        view?.navigateTo(VIEW.PLACEMARK, 0, "placemark_edit", placemark)
+
+    }
+
+
+    fun doShowListPlacemarks() {
+        info("In Search Presenter, heading for View List")
+        view?.navigateTo(VIEW.LIST)
+    }
+
 
     fun doLogout(){
         FirebaseAuth.getInstance().signOut()

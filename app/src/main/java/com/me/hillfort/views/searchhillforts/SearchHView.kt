@@ -29,7 +29,7 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
     lateinit var presenter: SearchHPresenter
     lateinit var app: MainApp
     //lateinit var imageModelArrayList: MutableList<HillfortModel>
-    lateinit var imageModelArrayList: ArrayList<HillfortModel>
+//    lateinit var imageModelArrayList: ArrayList<HillfortModel>
     private var adapter: SearchAdapter? = null
 
 
@@ -37,25 +37,28 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
         info("In Search H View create")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_searchview)
-        //   super.init(toolbar, false)
+        super.init(toolbar2, false)
         app = application as MainApp
         presenter = initPresenter(SearchHPresenter(this)) as SearchHPresenter
         recyclerView as RecyclerView
+
       //  imageModelArrayList = ArrayList()
-        async {
-            presenter.loadPlacemarks()
-            uiThread {
-            }
-        }
-            adapter = SearchAdapter(imageModelArrayList, this)
-            recyclerView!!.adapter = adapter
-            val layoutManager = LinearLayoutManager(this)
-            recyclerView.layoutManager = layoutManager
-
-            search_id.setOnQueryTextListener(this)
+       // async {
+        //    presenter.loadPlacemarks()
+       //     uiThread {
+       //     }
+      //  }
 
 
+
+         adapter = SearchAdapter(imageModelArrayList, this)
+         recyclerView!!.adapter = adapter
+         val layoutManager = LinearLayoutManager(this)
+         recyclerView.layoutManager = layoutManager as RecyclerView.LayoutManager?
+         showPlacemarks(imageModelArrayList)
+         search_id.setOnQueryTextListener(this)
     }
+
         override fun onQueryTextSubmit(query: String): Boolean {
             return false
         }
@@ -64,6 +67,7 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
         override fun onQueryTextChange(newText: String): Boolean {
             info("in on Query Txt Change in Search H View")
             adapter!!.filter(newText)
+            recyclerView.adapter?.notifyDataSetChanged()
             return false
         }
 
@@ -79,30 +83,29 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
 
     override fun onPlacemarkClick(placemark: HillfortModel) {
         info("On Placemark Clicked ")
-       // presenter.doEditPlacemark(placemark)
+       presenter.doShowPlacemark(placemark)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         info("Search View on Activity Result ")
-        presenter.loadPlacemarks()
+      //  presenter.loadPlacemarks()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main, menu)
+        menuInflater.inflate(R.menu.menu_search, menu)
         return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        info("Search View onOptions menu selected ")
+        info("Search View onOptions menu selected ${item?.itemId} ")
         when (item?.itemId) {
-            R.id.item_search -> presenter.doShowPlacemarkSearch()
-            R.id.item_logout -> presenter.doLogout()
+            R.id.item_search_exit -> presenter.doShowListPlacemarks()
+            R.id.item_search_logout -> presenter.doLogout()
         }
         return super.onOptionsItemSelected(item)
     }
-
 
 
 

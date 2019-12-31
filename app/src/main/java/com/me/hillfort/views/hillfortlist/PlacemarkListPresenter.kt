@@ -12,6 +12,7 @@ import com.me.hillfort.views.VIEW
 //import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.uiThread
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.views.searchhillforts.SearchHView
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.async
 import org.jetbrains.anko.info
@@ -56,6 +57,7 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
   fun loadPlacemarks() {
     async {
       val placemarks = app.pObj.findAll()
+      SearchHView.imageModelArrayList = app.pObj.findAll2()
       uiThread {
         view?.showPlacemarks(placemarks)
       }

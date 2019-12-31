@@ -51,6 +51,7 @@ class PlacemarkListView :  BaseView(), PlacemarkListener {
   }
 
   override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+    info("In Menu selected ${item?.itemId} ")
     when (item?.itemId) {
       R.id.item_add -> presenter.doAddPlacemark()
       R.id.item_map -> presenter.doShowPlacemarksMap()
