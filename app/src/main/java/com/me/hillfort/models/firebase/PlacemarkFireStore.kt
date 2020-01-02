@@ -10,6 +10,7 @@ import com.me.hillfort.helpers.readImageFromPath
 import org.jetbrains.anko.AnkoLogger
 import com.me.hillfort.helpers.readImageFromPath
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.views.hillfort.PlacemarkView
 import org.jetbrains.anko.info
 
 import java.io.ByteArrayOutputStream
@@ -44,6 +45,8 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
      // db.child("users").child(userId).child("placemarks").child(key).setValue(placemark)
       db.child("hillforts").child(key).setValue(placemark)
       updateImage(placemark)
+      // hold total number of placemarks created
+      PlacemarkView.totalNumberOfHillforts = PlacemarkView.totalNumberOfHillforts + 1
     }
   }
 

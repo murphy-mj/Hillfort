@@ -6,6 +6,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.AnkoLogger
@@ -20,13 +21,16 @@ class PlacemarkView : BaseView(), AnkoLogger {
 
   lateinit var presenter: PlacemarkPresenter
   var placemark = HillfortModel()
+  var edit = false
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_hillfort)
+      setContentView(R.layout.activity_hillfort)
     super.init(toolbarAdd, true)
 
     presenter = initPresenter (PlacemarkPresenter(this)) as PlacemarkPresenter
+
+
 
     mapView.onCreate(savedInstanceState);
     mapView.getMapAsync {
@@ -35,6 +39,25 @@ class PlacemarkView : BaseView(), AnkoLogger {
     }
 
     chooseImage.setOnClickListener { presenter.doSelectImage() }
+
+    button_share.setOnClickListener {
+      val intent = Intent()
+      intent.action = Intent.ACTION_SEND
+      intent.putExtra(Intent.EXTRA_SUBJECT,"Share Image")
+      intent.putExtra(Intent.EXTRA_TEXT, placemark!!.image!!.toString())
+      toast("share what ${ placemark!!.image!!.toString()}")
+      intent.type = "text/plain"
+      startActivity(Intent.createChooser(intent,"Choose App: "))
+    }
+   //   presenter.doShareImage(placemark!!.image)
+    if (intent.hasExtra("hillfort_edit")) {
+      edit = true
+      placemark = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
+      chooseImage.setText(R.string.button_selectImage)
+    } else {
+      chooseImage.setText(R.string.button_selectImage)
+    }
+
   }
 
 
@@ -117,6 +140,13 @@ class PlacemarkView : BaseView(), AnkoLogger {
     super.onSaveInstanceState(outState)
     mapView.onSaveInstanceState(outState)
   }
+
+  companion object{
+//
+    var totalNumberOfHillforts : Int = 0
+  }
+
+
 }
 
 

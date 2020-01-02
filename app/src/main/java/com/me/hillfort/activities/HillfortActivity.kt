@@ -109,6 +109,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             chooseImage.setText(R.string.button_selectImage)
             hillfortLocation2.setText(R.string.button_updateLocation)
             btnAdd2.setText(R.string.button_updateHillfort)
+
             hillfortTitle.setText(hillfort.title)
             hillfortDescription.setText(hillfort.description)
             Glide.with(this).load(hillfort.image).into(hillfortImage)
