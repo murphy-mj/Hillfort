@@ -10,6 +10,7 @@ import com.me.hillfort.helpers.readImageFromPath
 import org.jetbrains.anko.AnkoLogger
 import com.me.hillfort.helpers.readImageFromPath
 import com.me.hillfort.models.HillfortModel
+import org.jetbrains.anko.info
 
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -116,4 +117,17 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
   //  db.child("users").child(userId).child("placemarks").addListenerForSingleValueEvent(valueEventListener)
     db.child("hillforts").addListenerForSingleValueEvent(valueEventListener)
   }
+
+
+  fun addFavourite(placemark: HillfortModel) {
+    info("add favourite in FireStore, ${placemark!!.title} and ${userId}")
+    // val key = db.child("users").child(userId).child("placemarks").push().key
+  //  val key = db.child("favourites").child(userId).push().key
+    //key?.let {
+      // should only store placemark uid, but for convenience storing total hillfort/placemark
+      db.child("favourites").child(userId).child(placemark.uid).setValue(placemark)
+   // }
+  }
+
+
 }

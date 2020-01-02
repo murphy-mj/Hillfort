@@ -18,8 +18,9 @@ import com.me.hillfort.views.hillfortlist.PlacemarkAdapter
 import com.me.hillfort.views.hillfortlist.PlacemarkListPresenter
 import com.me.hillfort.views.hillfortlist.PlacemarkListener
 import org.jetbrains.anko.info
+import org.jetbrains.anko.toast
 
-class PlacemarkListView :  BaseView(), PlacemarkListener {
+class PlacemarkListView :  BaseView(), PlacemarkListener, FavouriteListener {
 
   lateinit var presenter: PlacemarkListPresenter
   lateinit var app: MainApp
@@ -41,7 +42,7 @@ class PlacemarkListView :  BaseView(), PlacemarkListener {
   override fun showPlacemarks(placemarks: List<HillfortModel>) {
     info("In SHOW placemarks in List View ")
     info("In SHOW placemarks in List View placemarks size is  ${placemarks.size}")
-    recyclerView.adapter = PlacemarkAdapter(placemarks, this)
+    recyclerView.adapter = PlacemarkAdapter(placemarks, this,this)
     recyclerView.adapter?.notifyDataSetChanged()
   }
 
@@ -63,8 +64,17 @@ class PlacemarkListView :  BaseView(), PlacemarkListener {
   }
 
   override fun onPlacemarkClick(placemark: HillfortModel) {
+    toast("on placemark click")
     presenter.doEditPlacemark(placemark)
   }
+
+  override fun onFavouriteClick(placemark: HillfortModel) {
+    toast("on placemark click")
+    presenter.doAddFavourite(placemark)
+  }
+
+
+
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     presenter.loadPlacemarks()

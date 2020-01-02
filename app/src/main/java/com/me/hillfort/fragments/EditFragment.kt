@@ -1,4 +1,4 @@
-package com.me.hillfortsfinal.fragments
+package com.me.hillfort.fragments
 
 import android.content.Context
 import android.net.Uri
@@ -14,6 +14,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.me.hillfort.R
+import com.me.hillfort.fragments.AboutUsFragment2
 import com.me.hillfort.main.MainApp
 import com.me.hillfort.models.HillfortModel
 //import com.me.hillfortsfinal.utils.createLoader
@@ -85,9 +86,9 @@ class EditFragment : Fragment(), AnkoLogger {
     }
 
     fun updateUserPlacemark(userId: String, uid: String?, placemark: HillfortModel) {
-        //app.database.child("user-placemarks").child(userId).child(uid!!)
-        app.database.child("users").child(userId).child("placemarks").child(placemark.uid).setValue(placemark)
-        app.database.child("users").child(userId).child("placemarks")
+        app.database.child("user-hillforts").child(userId).child(uid!!)
+        //app.database.child("users").child(userId).child("placemarks").child(placemark.uid).setValue(placemark)
+        app.database.child("user-hillforts").child(userId)
             .addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
@@ -106,10 +107,11 @@ class EditFragment : Fragment(), AnkoLogger {
     }
 
     fun updatePlacemark(uid: String?, placemark: HillfortModel) {
-      // app.database.child("placemarks").child(uid!!)
-        app.database.child("users").child(uid!!).child("placemarks").child(placemark.uid).setValue(placemark)
+        app.database.child("hillforts").child(placemark.uid).setValue(placemark)
+    //    app.database.child("users").child(uid!!).child("placemarks").child(placemark.uid).setValue(placemark)
 
-        app.database.child("users").child(app.auth.currentUser!!.uid).child("placemarks")
+     //   app.database.child("users").child(app.auth.currentUser!!.uid).child("placemarks")
+        app.database.child("hillforts")
             .addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {

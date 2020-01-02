@@ -76,6 +76,12 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
 
   }
 
+  fun doAddFavourite(placemark:HillfortModel){
+    info("In add Favourite in List Presenter ")
+    app.pObj.addFavourite(placemark)
+  }
+
+
 
 
  // fun getAllUsersHillforts(): List<HillfortModel> {

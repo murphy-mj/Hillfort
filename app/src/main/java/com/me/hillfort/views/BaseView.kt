@@ -6,6 +6,7 @@ import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.google.firebase.auth.FirebaseAuth
+import com.me.hillfort.activities.Home
 import com.me.hillfort.models.HillfortModel
 import org.jetbrains.anko.AnkoLogger
 import com.me.hillfort.models.Location
@@ -40,7 +41,7 @@ open abstract class BaseView() : AppCompatActivity(), AnkoLogger {
       VIEW.PLACEMARK -> intent = Intent(this, PlacemarkView::class.java)
       VIEW.MAPS -> intent = Intent(this, PlacemarkMapView::class.java)
       VIEW.LIST -> intent = Intent(this, PlacemarkListView::class.java)
-      VIEW.HOME -> intent = Intent(this, PlacemarkListView::class.java)
+      VIEW.HOME -> intent = Intent(this, Home::class.java)
       VIEW.NAVIGATOR -> intent = Intent(this, NavigatorMapView::class.java)
     //  VIEW.HOME -> intent = Intent(this, HillfortActivity2::class.java)
       VIEW.LOGIN -> intent = Intent(this, LoginView::class.java)

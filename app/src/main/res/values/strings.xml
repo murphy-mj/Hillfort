@@ -50,6 +50,7 @@
     <string name="button_updateHillfort"> Update Hillfort </string>
     <string name="button_deleteHillfort"> Delete Hillfort </string>
     <string name="button_cancelHillfort"> Cancel Activity </string>
+    <string name="button_favourite"> Fav </string>
 
     <string name="button_addSetting"> Add Student </string>
     <string name="button_updateSetting"> Update Student Settings </string>
@@ -77,7 +78,7 @@
     <string name="enter_placemark_title"> Please enter a Placemark Title </string>
     <string name="save_placemark"> Save Placemark </string>
     <string name="menu_showMap">Show Map</string>
-
+    <string name="menu_report_all">All Donations</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -94,6 +95,6 @@
     <string name="action_donate">Donate</string>
     <string name="action_update">Update</string>
     <string name="message_edit">Please Update your Details Below</string>
-
+    <string name="messageLoading">Please wait while we Connect to the Server...</string>
 
 </resources>

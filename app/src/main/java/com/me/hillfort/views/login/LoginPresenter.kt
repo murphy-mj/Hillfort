@@ -33,7 +33,7 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
         if (fireStore != null) {
           fireStore!!.fetchPlacemarks {
             //view?.hideProgress()
-            view?.navigateTo(VIEW.LIST)
+            view?.navigateTo(VIEW.HOME)
           }
         } else {
           // view?.hideProgress()
@@ -47,11 +47,11 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
   }
 
   fun doSignUp(email: String, password: String) {
-    view?.showProgress()
+  //  view?.showProgress()
     app.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
       if (task.isSuccessful) {
         // view?.hideProgress()
-        view?.navigateTo(VIEW.HOME)
+        view?.navigateTo(VIEW.LOGIN)
       } else {
         // view?.hideProgress()
         view?.toast("Sign Up Failed: ${task.exception?.message}")

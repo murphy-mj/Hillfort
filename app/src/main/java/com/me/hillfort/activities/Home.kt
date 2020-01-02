@@ -23,7 +23,8 @@ import com.me.hillfort.views.editlocation.EditLocationView
 import com.me.hillfort.views.map.PlacemarkMapView
 import com.me.hillfort.views.hillfort.PlacemarkView
 import com.me.hillfort.views.hillfortlist.PlacemarkListView
-import com.me.hillfortsfinal.fragments.AboutUsFragment2
+import com.me.hillfort.fragments.AboutUsFragment2
+
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.home.*
 import org.jetbrains.anko.progressDialog
@@ -75,6 +76,9 @@ class Home : AppCompatActivity(),
             R.id.nav_aboutus ->
                 navigateTo(AboutUsFragment2.newInstance())
 
+            R.id.nav_favourites ->
+                navigateTo(Favourites.newInstance())
+
             else -> toast("You Selected Something Else")
         }
         drawerLayout.closeDrawer(GravityCompat.START)
@@ -108,8 +112,6 @@ class Home : AppCompatActivity(),
             .addToBackStack(null)
             .commit()
     }
-
-
 
 
 

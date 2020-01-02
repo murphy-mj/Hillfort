@@ -1,5 +1,5 @@
 
-package com.me.hillfortsfinal.fragments
+package com.me.hillfort.fragments
 
 
 import android.os.Bundle
@@ -9,7 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.ReportFragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -22,23 +25,29 @@ import com.me.hillfort.main.MainApp
 import com.me.hillfort.fragments.PlacemarkAdapter
 import com.me.hillfort.fragments.PlacemarkListener
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.fragments.EditFragment
+import com.me.hillfort.utils.SwipeToDeleteCallback
+import com.me.hillfort.utils.SwipeToEditCallback
 import kotlinx.android.synthetic.main.fragment_basicreport.view.*
+import kotlinx.android.synthetic.main.fragment_basicreport.view.swiperefresh
+import kotlinx.android.synthetic.main.fragment_report.view.*
 //import com.me.hillfort.utils.createLoader
 //import com.me.hillfort.utils.hideLoader
 //import com.me.hillfort.utils.showLoader
-//import kotlinx.android.synthetic.main.fragment_report.view.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 
-class AboutUsFragment2 : Fragment(),AnkoLogger, PlacemarkListener {
+class AboutUsFragment2 : Fragment() ,AnkoLogger, PlacemarkListener {
 
     lateinit var root: View
     lateinit var app: MainApp
     lateinit var loader : AlertDialog
+  //  lateinit var placemarksListFrag : ArrayList<HillfortModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
+        info("in About Us Frag2 on Create")
     }
 
     override fun onCreateView(
@@ -51,7 +60,26 @@ class AboutUsFragment2 : Fragment(),AnkoLogger, PlacemarkListener {
         root.recyclerViewF.setLayoutManager(LinearLayoutManager(activity))
         setSwipeRefresh()
 
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(activity!!) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val adapter = root.recyclerViewF.adapter as PlacemarkAdapter
+                adapter.removeAt(viewHolder.adapterPosition)
+                deletePlacemark((viewHolder.itemView.tag as HillfortModel).uid)
+                deleteUserPlacemark(app.auth.currentUser!!.uid,
+                    (viewHolder.itemView.tag as HillfortModel).uid)
+            }
+        }
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(root.recyclerViewF)
 
+        val swipeEditHandler = object : SwipeToEditCallback(activity!!) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onPlacemarkClick(viewHolder.itemView.tag as HillfortModel)
+            }
+        }
+
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchEditHelper.attachToRecyclerView(root.recyclerViewF)
 
 
      return root
@@ -66,10 +94,11 @@ class AboutUsFragment2 : Fragment(),AnkoLogger, PlacemarkListener {
     }
 
     fun setSwipeRefresh() {
+        info("In set swipeRefresh")
         root.swiperefresh.setOnRefreshListener(object : SwipeRefreshLayout.OnRefreshListener {
             override fun onRefresh() {
                 root.swiperefresh.isRefreshing = true
-
+              //  placemarksListFrag = app.pObj.findAll2()
                 getAllPlacemarks(app.auth.currentUser!!.uid)
             }
         })
@@ -80,7 +109,8 @@ class AboutUsFragment2 : Fragment(),AnkoLogger, PlacemarkListener {
     //    loader = createLoader(activity!!)
     //    showLoader(loader, "Downloading Donations from Firebase")
         val placemarksList = ArrayList<HillfortModel>()
-        app.database.child("users").child(userId!!).child("placemarks")
+       // app.database.child("users").child(userId!!).child("placemarks")
+                app.pObj.db.child("hillforts")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
                     info("Firebase Donation error : ${error.message}")
@@ -93,22 +123,17 @@ class AboutUsFragment2 : Fragment(),AnkoLogger, PlacemarkListener {
                             getValue<HillfortModel>(HillfortModel::class.java)
 
                         placemarksList.add(placemark!!)
-                      //  root.recyclerView.adapter =
-                      //      PlacemarkAdapter(placemarksList, this@AboutUsFragment2)
-                      //  root.recyclerView.adapter?.notifyDataSetChanged()
-                      //  checkSwipeRefresh()
-                        app.database.child("users").child(userId).child("placemarks")
+                        root.recyclerViewF.adapter =
+                            PlacemarkAdapter(placemarksList, this@AboutUsFragment2)
+                        root.recyclerViewF.adapter?.notifyDataSetChanged()
+                        checkSwipeRefresh()
+                    //    app.database.child("users").child(userId).child("placemarks")
+                        app.pObj.db.child("hillforts")
                             .removeEventListener(this)
                     }
                 }
             })
     }
-
-
-
-
-
-
 
 
 
@@ -133,6 +158,31 @@ class AboutUsFragment2 : Fragment(),AnkoLogger, PlacemarkListener {
 
   //  app.database.child("users").child(userId).child("placemarks").child(placemark.fbId).setValue(placemark)
 
+    fun deleteUserPlacemark(userId: String, uid: String?) {
+        app.database.child("user-hillforts").child(userId).child(uid!!)
+            .addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.ref.removeValue()
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        info("Firebase Placemarks error : ${error.message}")
+                    }
+                })
+    }
 
+    fun deletePlacemark(uid: String?) {
+        app.database.child("hillforts").child(uid!!)
+            .addListenerForSingleValueEvent(
+                object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        snapshot.ref.removeValue()
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        info("Firebase Placemark error : ${error.message}")
+                    }
+                })
+    }
 
 }
