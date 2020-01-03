@@ -25,6 +25,22 @@
             android:id="@+id/nav_login"
             android:icon="@drawable/ic_menu_aboutus"
             android:title="@string/menu_login" />
+
+        <item
+            android:id="@+id/nav_AdminHillfort"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="Admin hillfort allocation" />
+
+
+        <item
+            android:id="@+id/nav_Stats"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="User Stats" />
+
+        <item
+            android:id="@+id/nav_OtherStats"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="Other User Stats" />
     </group>
 
     <item android:title="Communicate">

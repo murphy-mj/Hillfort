@@ -52,6 +52,8 @@ class ReportAllFragment : ReportFragment(),
 
         return root
     }
+// not required as import from ReportFragment
+    //  @JvmStatic allowing java files to use companion object as Static
 
     companion object {
         @JvmStatic

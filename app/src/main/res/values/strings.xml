@@ -28,6 +28,8 @@
     <string name="menutt_settings">to view and update user Info</string>
     <string name="menu_stats">Stats</string>
     <string name="menutt_stats">to view stats</string>
+    <string name="menu_stats_other">Other User Stats</string>
+
     <string name="menu_saveHillfort">Save</string>
     <string name="menutt_saveHillfort">to view save</string>
     <string name="menu_location">Location</string>

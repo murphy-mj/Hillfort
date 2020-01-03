@@ -10,6 +10,8 @@ import com.me.hillfort.helpers.readImageFromPath
 import org.jetbrains.anko.AnkoLogger
 import com.me.hillfort.helpers.readImageFromPath
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.models.UserModel
+import com.me.hillfort.views.hillfort.PlacemarkView
 import org.jetbrains.anko.info
 
 import java.io.ByteArrayOutputStream
@@ -18,6 +20,8 @@ import java.io.File
 class PlacemarkFireStore(val context: Context) :  AnkoLogger {
 
   val placemarks = ArrayList<HillfortModel>()
+  val users = ArrayList<UserModel>()
+  lateinit var user : UserModel
   lateinit var userId: String
   lateinit var db: DatabaseReference
   lateinit var st: StorageReference
@@ -35,6 +39,24 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
     return foundPlacemark
   }
 
+  fun findUserById(id: String): UserModel? {
+    val foundUser: UserModel? = users.find { p -> p.Uuid == id }
+    return foundUser
+  }
+
+
+  fun addUser() {
+    userId = FirebaseAuth.getInstance().currentUser!!.uid
+    db = FirebaseDatabase.getInstance().reference
+    user = UserModel(Uuid = userId,firstName = "Dummy",lastName = "Name")
+    db.child("users").child(userId).setValue(user)
+ //   db.child("users").child(userId).setValue(userId)
+   // db.child("favourites").child(userId).child(placemark.uid).setValue(placemark)
+   // db.child("users").setValue(userId)
+    users.add(user)
+  }
+
+
   fun create(placemark: HillfortModel) {
    // val key = db.child("users").child(userId).child("placemarks").push().key
     val key = db.child("hillforts").push().key
@@ -44,6 +66,8 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
      // db.child("users").child(userId).child("placemarks").child(key).setValue(placemark)
       db.child("hillforts").child(key).setValue(placemark)
       updateImage(placemark)
+      // hold total number of placemarks created
+      PlacemarkView.totalNumberOfHillforts = PlacemarkView.totalNumberOfHillforts + 1
     }
   }
 
@@ -110,10 +134,12 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
         placemarksReady()
       }
     }
-    userId = FirebaseAuth.getInstance().currentUser!!.uid
+
     db = FirebaseDatabase.getInstance().reference
     st = FirebaseStorage.getInstance().reference
     placemarks.clear()
+    userId = FirebaseAuth.getInstance().currentUser!!.uid
+
   //  db.child("users").child(userId).child("placemarks").addListenerForSingleValueEvent(valueEventListener)
     db.child("hillforts").addListenerForSingleValueEvent(valueEventListener)
   }
@@ -128,6 +154,15 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
       db.child("favourites").child(userId).child(placemark.uid).setValue(placemark)
    // }
   }
+
+
+ // fun addUser(user: UserModel) {
+ //   db.child("users").child(userId).setValue(user)
+ // }
+
+
+
+
 
 
 }

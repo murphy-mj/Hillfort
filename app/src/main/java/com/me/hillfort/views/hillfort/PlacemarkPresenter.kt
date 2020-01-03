@@ -2,6 +2,7 @@ package com.me.hillfort.views.hillfort
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import androidx.core.content.ContextCompat.startActivity
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -121,6 +122,18 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
     view?.let {
       showImagePicker(view!!, IMAGE_REQUEST)
     }
+  }
+
+
+
+  fun doShareImage(Image:String){
+    val imageRef :String = Image.toString()
+    val intent = Intent()
+    intent.action = Intent.ACTION_SEND
+    intent.putExtra(Intent.EXTRA_TEXT,imageRef)
+    intent.type = "text/plain"
+  //  startActivity(this,intent,"wd")
+  //  startActivity(Intent.createChooser(this,intent,"Please select App: "))
   }
 
   fun doSetLocation() {

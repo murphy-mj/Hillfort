@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 import com.me.hillfort.R
 import com.me.hillfort.views.login.LoginView
 import com.me.hillfort.fragments.*
@@ -24,6 +25,8 @@ import com.me.hillfort.views.map.PlacemarkMapView
 import com.me.hillfort.views.hillfort.PlacemarkView
 import com.me.hillfort.views.hillfortlist.PlacemarkListView
 import com.me.hillfort.fragments.AboutUsFragment2
+import com.me.hillfort.main.MainApp
+import com.me.hillfort.models.UserModel
 
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.home.*
@@ -34,11 +37,18 @@ class Home : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
 
     lateinit var ft: FragmentTransaction
+    lateinit var User : UserModel
+    lateinit var app: MainApp
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
         setSupportActionBar(toolbar)
+        app = application as MainApp
+     //   if(FirebaseAuth.getInstance().currentUser != null) {
+     //       User = app.pObj.findUserById(FirebaseAuth.getInstance().currentUser!!.uid.toString())!!
+     //   }
 
         // this is for the Floating icon at the bottom of screen
       //  fab.setOnClickListener { view ->
@@ -76,8 +86,17 @@ class Home : AppCompatActivity(),
             R.id.nav_aboutus ->
                 navigateTo(AboutUsFragment2.newInstance())
 
+            R.id.nav_AdminHillfort->
+                navigateTo(AdminSelectUser.newInstance())
+
             R.id.nav_favourites ->
                 navigateTo(Favourites.newInstance())
+
+            R.id.nav_Stats ->
+                navigateTo(StatsF())
+
+            R.id.nav_OtherStats ->
+                navigateTo(StatsAdminSelectUser.newInstance())
 
             else -> toast("You Selected Something Else")
         }
@@ -105,6 +124,24 @@ class Home : AppCompatActivity(),
         else
             super.onBackPressed()
     }
+
+
+    fun StatsF() :Fragment {
+        //stats of Current User
+        val args = Bundle()
+     //   if(FirebaseAuth.getInstance().currentUser != null) {
+     //          User = app.pObj.findUserById(FirebaseAuth.getInstance().currentUser!!.uid.toString())!!
+     //   } else {
+     //       User = UserModel("zzzz","Dummy","User")
+     //   }
+
+     //   args.putParcelable("User",User )
+        //args.putString("selectedUser",user.Uuid )
+        var frag = StatsFragment.newInstance()
+        frag.arguments=args
+        return frag
+    }
+
 
     private fun navigateTo(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
