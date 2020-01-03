@@ -45,7 +45,8 @@ class Home : AppCompatActivity(),
       //      Snackbar.make(view, "Replace with your own action",
       //          Snackbar.LENGTH_LONG).setAction("Action", null).show()
       //  }
-
+//
+        //
         navView.setNavigationItemSelectedListener(this)
         val toggle = ActionBarDrawerToggle(this, drawerLayout, toolbar,
             R.string.navigation_drawer_open, R.string.navigation_drawer_close
