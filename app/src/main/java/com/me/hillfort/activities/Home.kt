@@ -76,6 +76,9 @@ class Home : AppCompatActivity(),
             R.id.nav_aboutus ->
                 navigateTo(AboutUsFragment2.newInstance())
 
+            R.id.nav_AdminHillfort->
+                navigateTo(AdminSelectUser.newInstance())
+
             R.id.nav_favourites ->
                 navigateTo(Favourites.newInstance())
 

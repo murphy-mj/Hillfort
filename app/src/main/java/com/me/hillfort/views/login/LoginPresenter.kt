@@ -51,6 +51,7 @@ class LoginPresenter(view: BaseView) : BasePresenter(view) {
     app.auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(view!!) { task ->
       if (task.isSuccessful) {
         // view?.hideProgress()
+        fireStore!!.addUser()
         view?.navigateTo(VIEW.LOGIN)
       } else {
         // view?.hideProgress()
