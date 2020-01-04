@@ -74,10 +74,14 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
     }
   }
 
+
   fun doConfigureMap(m: GoogleMap) {
     map = m
     locationUpdate(placemark.location)
   }
+
+
+
 
   fun locationUpdate(location: Location) {
     placemark.location = location
@@ -88,6 +92,8 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
     map?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(placemark.location.lat, placemark.location.lng), placemark.location.zoom))
     view?.showLocation(placemark.location)
   }
+
+
 
 
   fun doAddOrSave(title: String, description: String) {

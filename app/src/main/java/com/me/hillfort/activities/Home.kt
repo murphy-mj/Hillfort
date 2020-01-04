@@ -83,11 +83,17 @@ class Home : AppCompatActivity(),
                 startActivity(Intent(this, PlacemarkListView::class.java))
              //   navigateTo(PlacemarkFragment.newInstance())
 
+            R.id.nav_Images ->
+                navigateTo(ImagesSelectHillforts.newInstance())
+
             R.id.nav_aboutus ->
                 navigateTo(AboutUsFragment2.newInstance())
 
             R.id.nav_AdminHillfort->
                 navigateTo(AdminSelectUser.newInstance())
+
+            R.id.nav_UserHillforts->
+                navigateTo(UserSelectUser.newInstance())
 
             R.id.nav_favourites ->
                 navigateTo(Favourites.newInstance())
@@ -141,6 +147,27 @@ class Home : AppCompatActivity(),
         frag.arguments=args
         return frag
     }
+
+
+    fun ImagesF() :Fragment {
+        //stats of Current User
+        val args = Bundle()
+        //   if(FirebaseAuth.getInstance().currentUser != null) {
+        //          User = app.pObj.findUserById(FirebaseAuth.getInstance().currentUser!!.uid.toString())!!
+        //   } else {
+        //       User = UserModel("zzzz","Dummy","User")
+        //   }
+
+        //   args.putParcelable("User",User )
+        //args.putString("selectedUser",user.Uuid )
+        var frag = StatsFragment.newInstance()
+        frag.arguments=args
+        return frag
+    }
+
+
+
+
 
 
     private fun navigateTo(fragment: Fragment) {

@@ -10,6 +10,7 @@ import com.me.hillfort.helpers.readImageFromPath
 import org.jetbrains.anko.AnkoLogger
 import com.me.hillfort.helpers.readImageFromPath
 import com.me.hillfort.models.HillfortModel
+import com.me.hillfort.models.ImageModel
 import com.me.hillfort.models.UserModel
 import com.me.hillfort.views.hillfort.PlacemarkView
 import org.jetbrains.anko.info
@@ -20,6 +21,7 @@ import java.io.File
 class PlacemarkFireStore(val context: Context) :  AnkoLogger {
 
   val placemarks = ArrayList<HillfortModel>()
+  var images = ArrayList<ImageModel>()
   val users = ArrayList<UserModel>()
   lateinit var user : UserModel
   lateinit var userId: String
@@ -32,6 +34,14 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
   fun findAll2(): ArrayList<HillfortModel> {
     return placemarks
   }
+
+  fun findAllImages(): List<ImageModel> {
+    return images
+  }
+  fun findAllImages2(): ArrayList<ImageModel> {
+    return images
+  }
+
 
 
   fun findById(id: Long): HillfortModel? {
@@ -103,7 +113,7 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
     if (placemark.image != "") {
       val fileName = File(placemark.image)
       val imageName = fileName.getName()
-
+      val imageInst = ImageModel(placemark.uid,"")
       var imageRef = st.child(userId + '/' + imageName)
       val baos = ByteArrayOutputStream()
       val bitmap = readImageFromPath(context, placemark.image)
@@ -117,13 +127,26 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
         }.addOnSuccessListener { taskSnapshot ->
           taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
             placemark.image = it.toString()
+            imageInst.url = it.toString()
             db.child("hillforts").child(placemark.uid).setValue(placemark)
-        //    db.child("users").child(userId).child("placemarks").child(placemark.uid).setValue(placemark)
+            // this is to store images associated with individual placemark in one location
+            var key = db.child("images").child(placemark.uid).child("images").push().key
+            key?.let {
+               db.child("images").child(placemark.uid).child("images").child(key).setValue(imageInst)}
           }
         }
+
+
       }
     }
   }
+
+
+
+
+
+
+
 
   fun fetchPlacemarks(placemarksReady: () -> Unit) {
     val valueEventListener = object : ValueEventListener {
@@ -143,6 +166,31 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
   //  db.child("users").child(userId).child("placemarks").addListenerForSingleValueEvent(valueEventListener)
     db.child("hillforts").addListenerForSingleValueEvent(valueEventListener)
   }
+
+
+  fun fetchImages(uid :String, imagesReady: () -> Unit) {
+    val valueEventListener = object : ValueEventListener {
+      override fun onCancelled(dataSnapshot: DatabaseError) {
+      }
+      override fun onDataChange(dataSnapshot: DataSnapshot) {
+        dataSnapshot!!.children.mapNotNullTo(images) { it.getValue<ImageModel>(ImageModel::class.java) }
+        imagesReady()
+      }
+    }
+
+    db = FirebaseDatabase.getInstance().reference
+    st = FirebaseStorage.getInstance().reference
+    images.clear()
+    userId = FirebaseAuth.getInstance().currentUser!!.uid
+    var placemarkId :String = uid
+
+    //  db.child("users").child(userId).child("placemarks").addListenerForSingleValueEvent(valueEventListener)
+    db.child("images").child(placemarkId).addListenerForSingleValueEvent(valueEventListener)
+  }
+
+
+
+
 
 
   fun addFavourite(placemark: HillfortModel) {

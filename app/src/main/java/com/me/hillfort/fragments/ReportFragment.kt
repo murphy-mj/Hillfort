@@ -25,6 +25,7 @@ import com.me.hillfort.utils.*
 
 
 import com.me.hillfort.fragments.PlacemarkListener
+import com.me.hillfort.models.ImageModel
 import kotlinx.android.synthetic.main.fragment_report.view.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
@@ -61,7 +62,9 @@ open class ReportFragment : Fragment(), AnkoLogger,
                 adapter.removeAt(viewHolder.adapterPosition)
                 deletePlacemark((viewHolder.itemView.tag as HillfortModel).uid)
                 deleteUserPlacemark(app.auth.currentUser!!.uid,
-                                  (viewHolder.itemView.tag as HillfortModel).uid)
+                    (viewHolder.itemView.tag as HillfortModel).uid)
+
+
             }
         }
         val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)

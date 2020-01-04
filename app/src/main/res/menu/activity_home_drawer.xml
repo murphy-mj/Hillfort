@@ -31,7 +31,10 @@
             android:icon="@drawable/ic_menu_aboutus"
             android:title="Admin hillfort allocation" />
 
-
+        <item
+            android:id="@+id/nav_UserHillforts"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="Admin hillfort allocation" />
         <item
             android:id="@+id/nav_Stats"
             android:icon="@drawable/ic_menu_aboutus"
@@ -41,6 +44,11 @@
             android:id="@+id/nav_OtherStats"
             android:icon="@drawable/ic_menu_aboutus"
             android:title="Other User Stats" />
+
+        <item
+            android:id="@+id/nav_Images"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="View Images" />
     </group>
 
     <item android:title="Communicate">
