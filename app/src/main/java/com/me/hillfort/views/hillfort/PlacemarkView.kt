@@ -14,6 +14,8 @@ import org.jetbrains.anko.toast
 import com.me.hillfort.helpers.readImageFromPath
 import com.me.hillfort.models.Location
 import com.me.hillfort.models.HillfortModel
+
+
 //import kotlinx.android.synthetic.main.activity_edit_location.*
 
 
@@ -30,25 +32,26 @@ class PlacemarkView : BaseView(), AnkoLogger {
 
     presenter = initPresenter (PlacemarkPresenter(this)) as PlacemarkPresenter
 
-
+    button_share.setOnClickListener {
+       val intent = Intent()
+       intent.action = Intent.ACTION_SEND
+       intent.putExtra(Intent.EXTRA_SUBJECT,"Share Image")
+       intent.putExtra(Intent.EXTRA_TEXT, placemark!!.image!!.toString())
+       toast("share what ${ placemark!!.image!!.toString()}")
+       intent.type = "text/plain"
+       startActivity(Intent.createChooser(intent,"Choose App: "))
+     }
 
     mapView.onCreate(savedInstanceState);
     mapView.getMapAsync {
-      presenter.doConfigureMap(it)
-      it.setOnMapClickListener { presenter.doSetLocation() }
+       presenter.doConfigureMap(it)
+       it.setOnMapClickListener { presenter.doSetLocation() }
     }
+
 
     chooseImage.setOnClickListener { presenter.doSelectImage() }
 
-    button_share.setOnClickListener {
-      val intent = Intent()
-      intent.action = Intent.ACTION_SEND
-      intent.putExtra(Intent.EXTRA_SUBJECT,"Share Image")
-      intent.putExtra(Intent.EXTRA_TEXT, placemark!!.image!!.toString())
-      toast("share what ${ placemark!!.image!!.toString()}")
-      intent.type = "text/plain"
-      startActivity(Intent.createChooser(intent,"Choose App: "))
-    }
+
    //   presenter.doShareImage(placemark!!.image)
     if (intent.hasExtra("hillfort_edit")) {
       edit = true
@@ -117,28 +120,28 @@ class PlacemarkView : BaseView(), AnkoLogger {
 
   override fun onDestroy() {
     super.onDestroy()
-    mapView.onDestroy()
+  //  mapView.onDestroy()
   }
 
   override fun onLowMemory() {
     super.onLowMemory()
-    mapView.onLowMemory()
+  //  mapView.onLowMemory()
   }
 
   override fun onPause() {
     super.onPause()
-    mapView.onPause()
+  //  mapView.onPause()
   }
 
   override fun onResume() {
     super.onResume()
-    mapView.onResume()
+  //  mapView.onResume()
     presenter.doResartLocationUpdates()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    mapView.onSaveInstanceState(outState)
+  //  mapView.onSaveInstanceState(outState)
   }
 
   companion object{
@@ -147,6 +150,25 @@ class PlacemarkView : BaseView(), AnkoLogger {
   }
 
 
+ // button_share.setOnClickListener {
+ //   val intent = Intent()
+ //   intent.action = Intent.ACTION_SEND
+ //   intent.putExtra(Intent.EXTRA_SUBJECT,"Share Image")
+ //   intent.putExtra(Intent.EXTRA_TEXT, placemark!!.image!!.toString())
+ //   toast("share what ${ placemark!!.image!!.toString()}")
+ //   intent.type = "text/plain"
+ //   startActivity(Intent.createChooser(intent,"Choose App: "))
+ // }
+
+
+ // mapView.onCreate(savedInstanceState);
+ // mapView.getMapAsync {
+ //   presenter.doConfigureMap(it)
+ //   it.setOnMapClickListener { presenter.doSetLocation() }
+//  }
+
 }
+
+
 
 

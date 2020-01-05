@@ -25,12 +25,11 @@ import com.me.hillfort.utils.*
 
 import com.me.hillfort.fragments.PlacemarkListener
 import com.me.hillfort.models.UserModel
+import com.me.hillfort.views.searchhillforts.SearchHView
 import kotlinx.android.synthetic.main.fragment_stats.*
 import kotlinx.android.synthetic.main.fragment_stats.view.*
 import kotlinx.android.synthetic.main.fragment_user.view.*
-import org.jetbrains.anko.AnkoLogger
-import org.jetbrains.anko.info
-import org.jetbrains.anko.toast
+import org.jetbrains.anko.*
 
 class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
 
@@ -41,7 +40,7 @@ class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
     lateinit var User : UserModel
     var numberofAssignedHillforts : Int = 0
     var numberofHillfortsvisted : Int = 0
-
+    lateinit var placemarksList: ArrayList<HillfortModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,16 +62,19 @@ class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
        //     User = app.pObj.findUserById(app.auth.currentUser!!.uid.toString())!!
        // }
         info("User Id on create view : ${app.auth.currentUser!!.uid}")
-
+        placemarksList = ArrayList<HillfortModel>()
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_stats, container, false)
-        getAllUserPlacemarks(app.auth.currentUser!!.uid)
-        //     update yo string
-        activity?.title = "Stats Report for Current logged in User ${app.auth.currentUser!!.uid.toString()} "
-        root.textView1.setText(app.auth.currentUser!!.uid.toString())
-        root.textView2.setText("Feck Sake")
+        activity?.title = "Stats -Current User ${app.auth.currentUser!!.uid.toString()} "
+        async {
+            getAllUserPlacemarks(app.auth.currentUser!!.uid)
+            uiThread {
+                info("in uiThread ")
+                root.textView1.setText(numberofAssignedHillforts.toString())
+                root.textView2.setText(numberofHillfortsvisted.toString())
+            }
+        }
 
-//        root.recyclerViewU.setLayoutManager(LinearLayoutManager(activity))
 
         return root
     }
@@ -92,47 +94,59 @@ class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
 
     override fun onResume() {
         super.onResume()
-        if(this::class == StatsFragment::class)
-            getAllUserPlacemarks(app.auth.currentUser!!.uid)
+   //     if(this::class == StatsFragment::class)
+     //   getAllUserPlacemarks(app.auth.currentUser!!.uid)
     }
 
     fun getAllUserPlacemarks(userId: String?) {
         //  loader = createLoader(activity!!)
         //  showLoader(loader, "Downloading Placemarks from Firebase")
-        val placemarksList = ArrayList<HillfortModel>()
-        db.child("users").child(userId!!).child("placemarks")
-            .addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(error: DatabaseError) {
-                    info("Firebase Users error : ${error.message}")
-                }
 
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    //     hideLoader(loader)
-                    val children = snapshot.children
-                    children.forEach {
-                        val placemark :HillfortModel? = it.
-                            getValue<HillfortModel>(HillfortModel::class.java)
-                        placemarksList.add(placemark!!)
-                        //  root.recyclerViewU.adapter =
-                        //    PlacemarkAdapter(
-                        //      placemarksList,
-                        //    this@StatsFragment
-                        //  )
-                        // root.recyclerViewU.adapter?.notifyDataSetChanged()
-
-                        db.child("users").child(userId)
-                            .removeEventListener(this)
+        async {
+            placemarksList.clear()
+            db.child("users").child(userId!!).child("placemarks")
+                .addValueEventListener(object : ValueEventListener {
+                    override fun onCancelled(error: DatabaseError) {
+                        info("Firebase Users error : ${error.message}")
                     }
+
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        //     hideLoader(loader)
+                        val children = snapshot.children
+                        children.forEach {
+                            val placemark: HillfortModel? =
+                                it.getValue<HillfortModel>(HillfortModel::class.java)
+                            info("${it.getValue<HillfortModel>(HillfortModel::class.java)?.title.toString()}")
+                            info("${placemark?.title.toString()}")
+                            placemarksList.add(placemark!!)
+                            numberofAssignedHillforts = placemarksList.size
+                            numberofHillfortsvisted = placemarksList.filter { it.visit_yn == true }.size
+                            info("The number of hillforts that this user has been assigend ${placemarksList.size}")
+                            //  root.recyclerViewU.adapter =
+                            //    PlacemarkAdapter(
+                            //      placemarksList,
+                            //    this@StatsFragment
+                            //  )
+                            // root.recyclerViewU.adapter?.notifyDataSetChanged()
+
+                            db.child("users").child(userId).child("placemarks")
+                                .removeEventListener(this)
+                        }
+
+                    }
+                })
+
+            uiThread {
+                try {
                     info("The number of hillforts that this user has been assigend ${placemarksList.size}")
-                    info("The first hillforts that this user has been assigend ${placemarksList[0].title}")
-                    numberofAssignedHillforts = placemarksList.size
-                    numberofHillfortsvisted = placemarksList.filter { it.visit_yn == true }.size
+
+
+                } catch (e: IndexOutOfBoundsException) {
+                    info("" + { e })
                 }
-            })
+            }
+        }
     }
-
-
-
     fun getAllPlacemarks(userId: String?) {
       //  loader = createLoader(activity!!)
       //  showLoader(loader, "Downloading Placemarks from Firebase")

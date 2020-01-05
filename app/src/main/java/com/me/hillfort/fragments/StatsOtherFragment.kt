@@ -41,12 +41,13 @@ class StatsOtherFragment : Fragment(), AnkoLogger, PlacemarkListener {
     var numberofAssignedHillforts : Int = 0
     var numberofHillfortsvisted : Int = 0
     var userSelected2 : String = ""
-
+    lateinit var placemarksList: ArrayList<HillfortModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         db= FirebaseDatabase.getInstance().reference
+        placemarksList = ArrayList<HillfortModel>()
       //  arguments?.let {
       //     User = it.getParcelable("User")!!
       //  }
@@ -59,8 +60,8 @@ class StatsOtherFragment : Fragment(), AnkoLogger, PlacemarkListener {
         savedInstanceState: Bundle?
     ): View? {
 
-
         userSelected2 = arguments!!.getString("selectedUser").toString()
+
        // if(app.auth.currentUser != null) {
        //     User = app.pObj.findUserById(app.auth.currentUser!!.uid.toString())!!
        // }
@@ -104,7 +105,7 @@ class StatsOtherFragment : Fragment(), AnkoLogger, PlacemarkListener {
     fun getAllUserPlacemarks(userId: String?) {
         //  loader = createLoader(activity!!)
         //  showLoader(loader, "Downloading Placemarks from Firebase")
-        val placemarksList = ArrayList<HillfortModel>()
+        placemarksList.clear()
         db.child("users").child(userId!!).child("placemarks")
             .addValueEventListener(object : ValueEventListener {
                 override fun onCancelled(error: DatabaseError) {
@@ -115,8 +116,10 @@ class StatsOtherFragment : Fragment(), AnkoLogger, PlacemarkListener {
                     //     hideLoader(loader)
                     val children = snapshot.children
                     children.forEach {
-                        val placemark :HillfortModel? = it.
-                            getValue<HillfortModel>(HillfortModel::class.java)
+                        val placemark: HillfortModel? =
+                            it.getValue<HillfortModel>(HillfortModel::class.java)
+                        info("${it.getValue<HillfortModel>(HillfortModel::class.java)?.title.toString()}")
+                        info("${placemark?.title.toString()}")
                         placemarksList.add(placemark!!)
                         //  root.recyclerViewU.adapter =
                         //    PlacemarkAdapter(
@@ -125,18 +128,23 @@ class StatsOtherFragment : Fragment(), AnkoLogger, PlacemarkListener {
                         //  )
                         // root.recyclerViewU.adapter?.notifyDataSetChanged()
 
-                        db.child("users").child(userId)
+                        db.child("users").child(userId).child("placemarks")
                             .removeEventListener(this)
                     }
-                    info("The number of hillforts that this user has been assigend ${placemarksList.size}")
-                    info("The first hillforts that this user has been assigend ${placemarksList[0].title}")
-                    numberofAssignedHillforts = placemarksList.size
-                    numberofHillfortsvisted = placemarksList.filter { it.visit_yn == true }.size
+
+
                 }
             })
+        try {
+            info("The number of hillforts that this user ${userId} has been assigend ${placemarksList.size}")
+            info("The first hillforts that this user has been assigend ${placemarksList[0].title}")
+            numberofAssignedHillforts = placemarksList.size
+            numberofHillfortsvisted = placemarksList.filter { it.visit_yn == true }.size
+        } catch (e: IndexOutOfBoundsException) {
+            info("" + { e })
+        }
+
     }
-
-
 
     fun getAllPlacemarks(userId: String?) {
       //  loader = createLoader(activity!!)

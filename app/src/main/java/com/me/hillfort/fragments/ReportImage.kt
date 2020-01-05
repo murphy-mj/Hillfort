@@ -67,7 +67,7 @@ open class ReportImage : Fragment(), AnkoLogger,
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_images, container, false)
         root.recyclerViewI.setLayoutManager(LinearLayoutManager(activity))
-        activity?.title = getString(R.string.activity_title_ReptImage)
+        activity?.title = getString(R.string.activity_title_ReptImag)
         setSwipeRefresh()
 
         val swipeDeleteHandler = object : SwipeToDeleteCallback(activity!!) {

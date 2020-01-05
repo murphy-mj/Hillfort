@@ -27,15 +27,6 @@
             android:title="@string/menu_login" />
 
         <item
-            android:id="@+id/nav_AdminHillfort"
-            android:icon="@drawable/ic_menu_aboutus"
-            android:title="Admin hillfort allocation" />
-
-        <item
-            android:id="@+id/nav_UserHillforts"
-            android:icon="@drawable/ic_menu_aboutus"
-            android:title="Admin hillfort allocation" />
-        <item
             android:id="@+id/nav_Stats"
             android:icon="@drawable/ic_menu_aboutus"
             android:title="User Stats" />
@@ -53,14 +44,15 @@
 
     <item android:title="Communicate">
         <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="@string/menu_share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="@string/menu_send" />
+        <item
+            android:id="@+id/nav_AdminHillfort"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="Admin hillfort allocation" />
+
+        <item
+            android:id="@+id/nav_UserHillforts"
+            android:icon="@drawable/ic_menu_aboutus"
+            android:title="Admin user hillforts " />
         </menu>
     </item>
 

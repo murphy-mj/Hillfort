@@ -7,7 +7,7 @@
     tools:context="com.me.hillfort.activities.HillfortActivity">
 
     <RelativeLayout
-        android:id="@+id/relativeLayout"
+        android:id="@+id/relativeLayout2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+            android:id="@+id/appBarLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/colorAccent"
@@ -34,7 +34,7 @@
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appBarLayout"
+            android:layout_below="@id/appBarLayout2"
             android:fillViewport="true">
 
             <LinearLayout
@@ -70,6 +70,11 @@
                     android:textColor="@color/colorAccent"
                     android:textSize="14sp" />
 
+
+
+
+
+
                 <ImageView
                     android:id="@+id/hillfortImage2"
                     android:layout_width="match_parent"
@@ -78,7 +83,6 @@
                     app:srcCompat="@mipmap/ic_launcher" />
 
 
-               
 
                 <Button
                     android:id="@+id/chooseImage2"

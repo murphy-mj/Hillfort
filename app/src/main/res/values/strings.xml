@@ -9,8 +9,7 @@
     <string name="hint_hillfortImage">Please add an image </string>
     <string name="hint_login_f1">please enter email</string>
     <string name="hint_login_f2">please enter password </string>
-
-    <string name="activity_title_ReptImage">Selected User Primary Images</string>
+    <string name="activity_title_ReptImag">Selected User Primary Images</string>
     <string name="activity_title_imagesselectedhilforts">Select a hillfort to view Images</string>
 
     Select a hillfort to view Images

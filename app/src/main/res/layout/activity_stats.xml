@@ -43,7 +43,7 @@
 
                 <TextView
                     android:id="@+id/textView1"
-                    android:text="TextView"
+                    android:text="Number Allocated"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
