@@ -153,7 +153,7 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
       override fun onCancelled(dataSnapshot: DatabaseError) {
       }
       override fun onDataChange(dataSnapshot: DataSnapshot) {
-        dataSnapshot!!.children.mapNotNullTo(placemarks) { it.getValue<HillfortModel>(HillfortModel::class.java) }
+        dataSnapshot.children.mapNotNullTo(placemarks) { it.getValue<HillfortModel>(HillfortModel::class.java) as HillfortModel }
         placemarksReady()
       }
     }
@@ -173,7 +173,7 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
       override fun onCancelled(dataSnapshot: DatabaseError) {
       }
       override fun onDataChange(dataSnapshot: DataSnapshot) {
-        dataSnapshot!!.children.mapNotNullTo(images) { it.getValue<ImageModel>(ImageModel::class.java) }
+        dataSnapshot.children.mapNotNullTo(images) { it.getValue<ImageModel>(ImageModel::class.java) }
         imagesReady()
       }
     }
@@ -194,7 +194,7 @@ class PlacemarkFireStore(val context: Context) :  AnkoLogger {
 
 
   fun addFavourite(placemark: HillfortModel) {
-    info("add favourite in FireStore, ${placemark!!.title} and ${userId}")
+    info("add favourite in FireStore, ${placemark.title} and ${userId}")
     // val key = db.child("users").child(userId).child("placemarks").push().key
   //  val key = db.child("favourites").child(userId).push().key
     //key?.let {

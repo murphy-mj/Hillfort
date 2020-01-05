@@ -41,15 +41,6 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
   }
 
 
- // fun loadPlacemarks() {
- //   doAsync {
- //   //  val placemarks = app.placemarks.findAll()
- //     val placemarks:List<HillfortModel> = getAllUsersHillforts()
- //     uiThread {
- //       view?.showPlacemarks(placemarks)
- //     }
- //   }
- // }
 
 
 
@@ -84,43 +75,7 @@ class PlacemarkListPresenter(view: BaseView) : BasePresenter(view),AnkoLogger {
 
 
 
- // fun getAllUsersHillforts(): List<HillfortModel> {
 
-
-  fun loadPlacemarks2(app : MainApp) {
-    info("In Load placemarks in List Presenter ")
-    async {
-      //  var hillfortList = ArrayList<HillfortModel>()
-      val hillfortList: MutableList<HillfortModel> = mutableListOf()
-      val hillfortList2: MutableList<HillfortModel> = mutableListOf()
-      app.database.child("hillforts")
-        .addValueEventListener(object : ValueEventListener {
-          override fun onCancelled(error: DatabaseError) {
-            // bla
-          }
-
-          override fun onDataChange(snapshot: DataSnapshot) {
-            val children = snapshot.children
-            snapshot.children.mapNotNullTo(hillfortList) {
-              it.getValue<HillfortModel>(HillfortModel::class.java)
-            }
-            info("In Load placemarks in List Presenter hillfortList size ${hillfortList.size}")
-
-            children.forEach {
-              val hillfort = it.getValue<HillfortModel>(HillfortModel::class.java)
-              info("adding hillfort to list : ${hillfort!!.description}")
-              hillfortList2.add(hillfort!!)
-            }
-            info("In Load placemarks in List Presenter hillfortList2 size ${hillfortList2.size}")
-            app.database.child("hillforts").removeEventListener(this)
-          }
-        })
-      uiThread {
-        info("In Load placemarks in List Presenter UITread hillfortList2 size ${hillfortList2.size}")
-        view?.showPlacemarks(hillfortList2)
-      }
-    }
-  }
 
 
 

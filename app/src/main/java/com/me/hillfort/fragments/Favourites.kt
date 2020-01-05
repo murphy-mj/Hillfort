@@ -55,7 +55,7 @@ class Favourites : Fragment() ,AnkoLogger, PlacemarkListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        activity?.title = "${app.auth.currentUser!!.uid}"
+        activity?.title = "Favourites of ${app.auth.currentUser!!.uid}"
         root =  inflater.inflate(R.layout.fragment_basicreport, container, false)
         root.recyclerViewF.setLayoutManager(LinearLayoutManager(activity))
         setSwipeRefresh()
@@ -64,6 +64,7 @@ class Favourites : Fragment() ,AnkoLogger, PlacemarkListener {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 val adapter = root.recyclerViewF.adapter as PlacemarkAdapter
                 adapter.removeAt(viewHolder.adapterPosition)
+                Toast.makeText(activity, "Deletion only from Favourites", Toast.LENGTH_LONG).show()
                 deleteFavUserPlacemark(app.auth.currentUser!!.uid,
                     (viewHolder.itemView.tag as HillfortModel).uid)
             }
@@ -74,6 +75,7 @@ class Favourites : Fragment() ,AnkoLogger, PlacemarkListener {
         val swipeEditHandler = object : SwipeToEditCallback(activity!!) {
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 onPlacemarkClick(viewHolder.itemView.tag as HillfortModel)
+
             }
         }
 
@@ -142,11 +144,11 @@ class Favourites : Fragment() ,AnkoLogger, PlacemarkListener {
     }
 
     override fun onPlacemarkClick(placemark: HillfortModel) {
-       // only delete from favourites
-       // activity!!.supportFragmentManager.beginTransaction()
-       //     .replace(R.id.homeFrame, EditFragment.newInstance(placemark))
-       //     .addToBackStack(null)
-       //     .commit()
+
+        activity!!.supportFragmentManager.beginTransaction()
+            .replace(R.id.homeFrame, EditFragment.newInstance(placemark))
+            .addToBackStack(null)
+            .commit()
     }
 
     override fun onResume() {
@@ -159,7 +161,7 @@ class Favourites : Fragment() ,AnkoLogger, PlacemarkListener {
   //  app.database.child("users").child(userId).child("placemarks").child(placemark.fbId).setValue(placemark)
 
     fun deleteFavUserPlacemark(userId: String, uid: String?) {
-        app.database.child("user-hillforts").child(userId).child(uid!!)
+        app.pObj.db.child("user").child(userId).child(uid!!)
             .addListenerForSingleValueEvent(
                 object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {

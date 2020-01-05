@@ -31,7 +31,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
          * if (viewHolder?.adapterPosition == 0) return 0
          */
        // if (viewHolder?.adapterPosition == 10) return 0
-        return super.getMovementFlags(recyclerViewF!!, viewHolder!!)
+        return super.getMovementFlags(recyclerViewF, viewHolder)
     }
 
     override fun onMove(recyclerViewF : RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
@@ -49,7 +49,7 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
 
         if (isCanceled) {
             clearCanvas(c, itemView.right + dX, itemView.top.toFloat(), itemView.right.toFloat(), itemView.bottom.toFloat())
-            super.onChildDraw(c!!, recyclerViewF!!, viewHolder, dX, dY, actionState, isCurrentlyActive)
+            super.onChildDraw(c, recyclerViewF, viewHolder, dX, dY, actionState, isCurrentlyActive)
             return
         }
 
@@ -68,9 +68,9 @@ abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleC
 
         // Draw the delete icon
         deleteIcon?.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
-        deleteIcon?.draw(c!!)
+        deleteIcon?.draw(c)
 
-        super.onChildDraw(c!!, recyclerViewF!!, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        super.onChildDraw(c, recyclerViewF, viewHolder, dX, dY, actionState, isCurrentlyActive)
     }
 
     private fun clearCanvas(c: Canvas?, left: Float, top: Float, right: Float, bottom: Float) {

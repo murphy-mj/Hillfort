@@ -25,31 +25,12 @@ class PlacemarkView : BaseView(), AnkoLogger {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-      setContentView(R.layout.activity_hillfort)
+    setContentView(R.layout.activity_hillfort_add)
     super.init(toolbarAdd, true)
-
     presenter = initPresenter (PlacemarkPresenter(this)) as PlacemarkPresenter
-
-
-
-    mapView.onCreate(savedInstanceState);
-    mapView.getMapAsync {
-      presenter.doConfigureMap(it)
-      it.setOnMapClickListener { presenter.doSetLocation() }
-    }
 
     chooseImage.setOnClickListener { presenter.doSelectImage() }
 
-    button_share.setOnClickListener {
-      val intent = Intent()
-      intent.action = Intent.ACTION_SEND
-      intent.putExtra(Intent.EXTRA_SUBJECT,"Share Image")
-      intent.putExtra(Intent.EXTRA_TEXT, placemark!!.image!!.toString())
-      toast("share what ${ placemark!!.image!!.toString()}")
-      intent.type = "text/plain"
-      startActivity(Intent.createChooser(intent,"Choose App: "))
-    }
-   //   presenter.doShareImage(placemark!!.image)
     if (intent.hasExtra("hillfort_edit")) {
       edit = true
       placemark = intent.extras?.getParcelable<HillfortModel>("hillfort_edit")!!
@@ -60,23 +41,6 @@ class PlacemarkView : BaseView(), AnkoLogger {
 
   }
 
-
-
-
-  override fun showPlacemark(placemark: HillfortModel) {
-    hillfortTitle.setText(placemark.title)
-    hillfortDescription.setText(placemark.description)
-    Glide.with(this).load(placemark.image).into(hillfortImage);
-    if (placemark.image != null) {
-      chooseImage.setText(R.string.change_placemark_image)
-    }
-    this.showLocation(placemark.location)
-  }
-
-  override fun showLocation(location: Location) {
-    location_lat.setText("%.6f".format(location.lat))
-    location_lng.setText("%.6f".format(location.lng))
-  }
 
   override fun onCreateOptionsMenu(menu: Menu): Boolean {
     menuInflater.inflate(R.menu.menu_hillfort, menu)
@@ -97,12 +61,40 @@ class PlacemarkView : BaseView(), AnkoLogger {
         if (hillfortTitle.text.toString().isEmpty()) {
           toast(R.string.enter_placemark_title)
         } else {
-          presenter.doAddOrSave(hillfortTitle.text.toString(), hillfortDescription.text.toString())
+          presenter.doAddOrSave(
+            hillfortTitle.text.toString(),
+            hillfortDescription.text.toString()
+
+            )
         }
       }
+
     }
     return super.onOptionsItemSelected(item)
   }
+
+
+
+  override fun showPlacemark(placemark: HillfortModel) {
+    hillfortTitle.setText(placemark.title)
+    hillfortDescription.setText(placemark.description)
+
+    Glide.with(this).load(placemark.image).into(hillfortImage);
+    if (placemark.image != null) {
+      chooseImage.setText(R.string.change_placemark_image)
+    }
+    this.showLocation(placemark.location)
+  }
+
+  override fun showLocation(location: Location) {
+   // location_lat.setText("%.6f".format(location.lat))
+   // location_lng.setText("%.6f".format(location.lng))
+      location_lat.setText("%.6f".format(location.lat))
+      location_lng.setText("%.6f".format(location.lng))
+
+  }
+
+
 
   override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
     super.onActivityResult(requestCode, resultCode, data)
@@ -117,28 +109,28 @@ class PlacemarkView : BaseView(), AnkoLogger {
 
   override fun onDestroy() {
     super.onDestroy()
-    mapView.onDestroy()
+  //  mapView.onDestroy()
   }
 
   override fun onLowMemory() {
     super.onLowMemory()
-    mapView.onLowMemory()
+ //   mapView.onLowMemory()
   }
 
   override fun onPause() {
     super.onPause()
-    mapView.onPause()
+ //   mapView.onPause()
   }
 
   override fun onResume() {
     super.onResume()
-    mapView.onResume()
+//    mapView.onResume()
     presenter.doResartLocationUpdates()
   }
 
   override fun onSaveInstanceState(outState: Bundle) {
     super.onSaveInstanceState(outState)
-    mapView.onSaveInstanceState(outState)
+ //   mapView.onSaveInstanceState(outState)
   }
 
   companion object{
@@ -146,7 +138,26 @@ class PlacemarkView : BaseView(), AnkoLogger {
     var totalNumberOfHillforts : Int = 0
   }
 
+  // moved Share to Images
 
+ // button_share.setOnClickListener {
+ //   val intent = Intent()
+ //   intent.action = Intent.ACTION_SEND
+ //   intent.putExtra(Intent.EXTRA_SUBJECT,"Share Image")
+ //   intent.putExtra(Intent.EXTRA_TEXT, placemark.image.toString())
+ //   toast("share what ${ placemark.image.toString()}")
+ //   intent.type = "text/plain"
+ //   startActivity(Intent.createChooser(intent,"Choose App: "))
+ // }
+
+
+ // mapView.onCreate(savedInstanceState);
+ // mapView.getMapAsync {
+ //   presenter.doConfigureMap(it)
+ //   it.setOnMapClickListener { presenter.doSetLocation() }
+ // }
+
+  //   presenter.doShareImage(placemark!!.image)
 }
 
 

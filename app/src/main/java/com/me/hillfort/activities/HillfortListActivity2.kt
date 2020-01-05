@@ -117,13 +117,13 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener, AnkoLogger 
                 loginUser = ""
                 finish()
             }
-            R.id.item_update -> {
-                toast("please click on the hillfort you wish to update")
-                //no action required
-            }
-            R.id.item_stats -> {
-                toast("stats selected")
-                toast("Sending you to stats $loginUser")
+   //         R.id.item_update -> {
+   //             toast("please click on the hillfort you wish to update")
+   //             //no action required
+   //         }
+   //         R.id.item_stats -> {
+    //            toast("stats selected")
+    //            toast("Sending you to stats $loginUser")
              //   testCall()
              //   val intent = Intent(this, StatsActivity::class.java).apply {
               //      putExtra("id", loginUser)
@@ -131,17 +131,17 @@ class HillfortListActivity2 : AppCompatActivity(), HillfortListener, AnkoLogger 
               //  }
              //   startActivity(intent)
               //  startActivityForResult<Settings2Activity>(0)
-                 startActivityForResult(intentFor<Settings2Activity>().putExtra("email", loginUser),0)
+      //           startActivityForResult(intentFor<Settings2Activity>().putExtra("email", loginUser),0)
              //   startActivityForResult(intentFor<StatsActivity>().putExtra("data",app.hillforts.findAll() as Parcelable),0)
-            }
+          //  }
 
-            R.id.item_settings -> {
-                toast("settings selected")
+          //  R.id.item_settings -> {
+              //  toast("settings selected")
               //  startActivityForResult<SettingsActivity>(0)
              //   startActivityForResult(intentFor<SettingsActivity>().putExtra("id", userID),0)
              //   startActivityForResult(intentFor<PlacemarkMapView>().putExtra("id", userID),0)
-                startActivityForResult<PlacemarkMapView>(0)
-            }
+            //    startActivityForResult<PlacemarkMapView>(0)
+         //   }
 
         }
         return super.onOptionsItemSelected(item)

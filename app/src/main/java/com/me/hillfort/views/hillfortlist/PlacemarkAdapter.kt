@@ -25,7 +25,7 @@ class PlacemarkAdapter constructor(private var placemarks: List<HillfortModel>,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         info("In PlacemarkAdapter  placemarks size ${placemarks.size}")
         return MainHolder(
-            LayoutInflater.from(parent?.context).inflate(
+            LayoutInflater.from(parent.context).inflate(
                 R.layout.card_hillfort,
                 parent,
                 false
