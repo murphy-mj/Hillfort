@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Parcelable
+import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -33,6 +34,8 @@ import kotlinx.android.synthetic.main.home.*
 import org.jetbrains.anko.progressDialog
 import org.jetbrains.anko.toast
 
+
+
 class Home : AppCompatActivity(),
     NavigationView.OnNavigationItemSelectedListener {
 
@@ -44,7 +47,7 @@ class Home : AppCompatActivity(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.home)
-        setSupportActionBar(toolbar)
+       // setSupportActionBar(toolbar)
         app = application as MainApp
      //   if(FirebaseAuth.getInstance().currentUser != null) {
      //       User = app.pObj.findUserById(FirebaseAuth.getInstance().currentUser!!.uid.toString())!!
@@ -62,7 +65,6 @@ class Home : AppCompatActivity(),
         )
         drawerLayout.addDrawerListener(toggle)
         toggle.syncState()
-
         ft = supportFragmentManager.beginTransaction()
 
         val fragment = AboutUsFragment.newInstance()
@@ -110,26 +112,26 @@ class Home : AppCompatActivity(),
         return true
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.menu_home, menu)
-        return true
-    }
+ //   override fun onCreateOptionsMenu(menu: Menu): Boolean {
+ //       menuInflater.inflate(R.menu.menu_home, menu)
+ //       return true
+ //   }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
-        when (item.itemId) {
+//        when (item.itemId) {
          //   R.id.action_donate -> toast("You Selected Donate")
          //   R.id.action_report -> toast("You Selected Report")
-        }
-        return super.onOptionsItemSelected(item)
-    }
+  //      }
+//        return super.onOptionsItemSelected(item)
+//    }
 
-    override fun onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START))
-            drawerLayout.closeDrawer(GravityCompat.START)
-        else
-            super.onBackPressed()
-    }
+ //   override fun onBackPressed() {
+ // /      if (drawerLayout.isDrawerOpen(GravityCompat.START))
+ //           drawerLayout.closeDrawer(GravityCompat.START)
+ //       else
+ //           super.onBackPressed()
+ //   }
 
 
     fun StatsF() :Fragment {
@@ -171,9 +173,8 @@ class Home : AppCompatActivity(),
 
 
     private fun navigateTo(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.homeFrame, fragment)
-            .addToBackStack(null)
+       supportFragmentManager.beginTransaction()
+            .addToBackStack("Home")
             .commit()
     }
 

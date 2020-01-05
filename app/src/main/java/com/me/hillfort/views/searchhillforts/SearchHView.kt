@@ -28,8 +28,6 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
 
     lateinit var presenter: SearchHPresenter
     lateinit var app: MainApp
-    //lateinit var imageModelArrayList: MutableList<HillfortModel>
-//    lateinit var imageModelArrayList: ArrayList<HillfortModel>
     private var adapter: SearchAdapter? = null
 
 
@@ -42,19 +40,16 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
         presenter = initPresenter(SearchHPresenter(this)) as SearchHPresenter
         recyclerView as RecyclerView
 
-      //  imageModelArrayList = ArrayList()
-       // async {
-        //    presenter.loadPlacemarks()
-       //     uiThread {
-       //     }
-      //  }
-
-
+        async {
+            presenter.loadPlacemarks()
+            uiThread {
+            }
+        }
 
          adapter = SearchAdapter(imageModelArrayList, this)
          recyclerView!!.adapter = adapter
          val layoutManager = LinearLayoutManager(this)
-         recyclerView.layoutManager = layoutManager as RecyclerView.LayoutManager?
+         recyclerView.layoutManager = layoutManager
          showPlacemarks(imageModelArrayList)
          search_id.setOnQueryTextListener(this)
     }
@@ -73,7 +68,6 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
 
 
     override fun showPlacemarks(placemarks: ArrayList<HillfortModel>) {
-        info("In SHOW placemarks in Search View ")
         info("In SHOW placemarks in Search View placemarks size is  ${placemarks.size}")
         info("In SHOW placemarks in Search View imagemodel size is  ${imageModelArrayList.size}")
         recyclerView.adapter = SearchAdapter(placemarks, this)
@@ -88,7 +82,6 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         info("Search View on Activity Result ")
-      //  presenter.loadPlacemarks()
         super.onActivityResult(requestCode, resultCode, data)
     }
 
@@ -101,7 +94,6 @@ class SearchHView  :  BaseView(), AnkoLogger, PlacemarkListener, SearchView.OnQu
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         info("Search View onOptions menu selected ${item?.itemId} ")
         when (item?.itemId) {
-            R.id.item_search_exit -> presenter.doShowListPlacemarks()
             R.id.item_search_logout -> presenter.doLogout()
         }
         return super.onOptionsItemSelected(item)

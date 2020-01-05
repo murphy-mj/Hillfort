@@ -85,7 +85,7 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
 
   fun locationUpdate(location: Location) {
     placemark.location = location
-    placemark.location.zoom = 15f
+    placemark.location.zoom = 10f
     map?.clear()
     val options = MarkerOptions().title(placemark.title).position(LatLng(placemark.location.lat, placemark.location.lng))
     map?.addMarker(options)
@@ -110,6 +110,26 @@ class PlacemarkPresenter(view: BaseView) : BasePresenter(view) {
       }
     }
   }
+
+  fun doAddOrSave(title: String, description: String,lat :Double,lng:Double) {
+    placemark.title = title
+    placemark.description = description
+    var loc: Location = Location(lat,lng,8f)
+    placemark.location = loc
+    async {
+      if (edit) {
+        app.pObj.update(placemark)
+      } else {
+        app.pObj.create(placemark)
+      }
+      uiThread {
+        view?.finish()
+      }
+    }
+  }
+
+
+
 
   fun doCancel() {
     view?.finish()

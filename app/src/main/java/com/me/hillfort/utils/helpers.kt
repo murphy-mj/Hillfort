@@ -18,7 +18,8 @@ fun createLoader(activity: FragmentActivity) : AlertDialog {
 
 fun showLoader(loader: AlertDialog, message: String) {
     if (!loader.isShowing()) {
-        if (message != null) loader.setTitle(message)
+        //if (message != null) loader.setTitle(message)
+        loader.setTitle(message)
         loader.show()
     }
 }

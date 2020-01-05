@@ -6,9 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.me.hillfort.R
-import com.me.hillfort.views.searchhillforts.SearchHView
 import com.me.hillfort.models.HillfortModel
-import kotlinx.android.synthetic.main.card_hillfort.view.*
+import kotlinx.android.synthetic.main.card_hillfort_wo_share.view.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import java.util.*
@@ -27,9 +26,10 @@ class SearchAdapter constructor(private var placemarks: ArrayList<HillfortModel>
 
     private val arraylist: ArrayList<HillfortModel>
 
-    init {
 
-        //inflater = LayoutInflater.from(ctx)
+    // we take a copy of the SearchView's companion Object
+    // in the filter we clear the
+    init {
         this.arraylist = ArrayList<HillfortModel>()
         this.arraylist.addAll(SearchHView.imageModelArrayList)
     }
@@ -38,8 +38,8 @@ class SearchAdapter constructor(private var placemarks: ArrayList<HillfortModel>
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainHolder {
         info("In SearchAdapter  placemarks size ${placemarks.size}")
         return MainHolder(
-            LayoutInflater.from(parent?.context).inflate(
-                R.layout.card_hillfort,
+            LayoutInflater.from(parent.context).inflate(
+                R.layout.card_hillfort_wo_share,
                 parent,
                 false
             )
@@ -57,7 +57,7 @@ class SearchAdapter constructor(private var placemarks: ArrayList<HillfortModel>
 
         fun bind(placemark: HillfortModel, listener: PlacemarkListener) {
             itemView.hillfortTitle.text = placemark.title
-            //   itemView.hillfortDescription.text = placemark.description
+            itemView.hillfortDescription.text = placemark.description
             Glide.with(itemView.context).load(placemark.image).into(itemView.hillfortIcon);
             itemView.setOnClickListener { listener.onPlacemarkClick(placemark) }
         }

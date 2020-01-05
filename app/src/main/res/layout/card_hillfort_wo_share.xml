@@ -26,7 +26,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@+id/hillfortImage"
+            android:layout_toRightOf="@+id/hillfortIcon"
             android:textSize="30sp" />
 
         <TextView
@@ -34,7 +34,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/hillfortTitle"
-            android:layout_toRightOf="@+id/hillfortImage"/>
+            android:layout_toRightOf="@+id/hillfortIcon"/>
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

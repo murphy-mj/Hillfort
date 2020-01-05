@@ -10,8 +10,8 @@
 
   <com.google.android.gms.maps.MapView
       android:id="@+id/mapView"
-      android:layout_width="361dp"
-      android:layout_height="451dp"
+      android:layout_width="390dp"
+      android:layout_height="513dp"
       android:layout_marginStart="8dp"
       android:layout_marginTop="8dp"
       android:layout_marginEnd="8dp"
@@ -22,31 +22,31 @@
       app:layout_constraintTop_toTopOf="parent" />
 
   <androidx.cardview.widget.CardView
-    android:id="@+id/cardView"
-    android:layout_width="356dp"
-    android:layout_height="127dp"
-    android:layout_marginStart="8dp"
-    android:layout_marginEnd="8dp"
-    android:layout_marginBottom="16dp"
-    app:layout_constraintBottom_toBottomOf="parent"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintHorizontal_bias="0.533"
-    app:layout_constraintStart_toStartOf="parent">
+      android:id="@+id/cardView"
+      android:layout_width="363dp"
+      android:layout_height="79dp"
+      android:layout_marginStart="8dp"
+      android:layout_marginEnd="8dp"
+      android:layout_marginBottom="8dp"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.533"
+      app:layout_constraintStart_toStartOf="parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_width="334dp"
+        android:layout_height="85dp">
 
       <ImageView
           android:id="@+id/currentImage"
           android:layout_width="121dp"
           android:layout_height="98dp"
-          android:layout_marginEnd="16dp"
+          android:layout_marginEnd="8dp"
+          android:contentDescription="@string/placemark_image_placeholder"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toEndOf="parent"
           app:layout_constraintTop_toTopOf="parent"
-          tools:srcCompat="@tools:sample/backgrounds/scenic"
-          android:contentDescription="@string/placemark_image_placeholder" />
+          tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
       <TextView
           android:id="@+id/currentTitle"
@@ -61,9 +61,9 @@
 
       <TextView
           android:id="@+id/currentDescription"
-          android:layout_width="173dp"
-          android:layout_height="48dp"
-          android:layout_marginBottom="24dp"
+          android:layout_width="181dp"
+          android:layout_height="35dp"
+          android:layout_marginBottom="8dp"
           android:text="@string/placemark_description_placeholder"
           app:layout_constraintBottom_toBottomOf="parent"
           app:layout_constraintEnd_toStartOf="@+id/currentImage"
