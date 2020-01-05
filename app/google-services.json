@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "42414683932",
+    "firebase_url": "https://placemark-test-57906.firebaseio.com",
+    "project_id": "placemark-test-57906",
+    "storage_bucket": "placemark-test-57906.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:42414683932:android:9aff437a368d3cc92decd9",
+        "android_client_info": {
+          "package_name": "com.me.hillfort"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "42414683932-9rffa241doc02pb0jbmmk5lormhkobm3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfwzZ6qtvmzelXCBpR_mjehWJalBOOuHs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "42414683932-9rffa241doc02pb0jbmmk5lormhkobm3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
