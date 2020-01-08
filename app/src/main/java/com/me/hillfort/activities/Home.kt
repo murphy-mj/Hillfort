@@ -174,6 +174,7 @@ class Home : AppCompatActivity(),
 
     private fun navigateTo(fragment: Fragment) {
        supportFragmentManager.beginTransaction()
+           .replace(R.id.homeFrame, fragment)
             .addToBackStack("Home")
             .commit()
     }
