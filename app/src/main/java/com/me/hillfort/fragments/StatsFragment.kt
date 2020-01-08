@@ -40,7 +40,8 @@ class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
     lateinit var User : UserModel
     var numberofAssignedHillforts : Int = 0
     var numberofHillfortsvisted : Int = 0
-    lateinit var placemarksList: ArrayList<HillfortModel>
+   // lateinit var placemarksList: ArrayList<HillfortModel>
+  // lateinit var placemarksList: MutableListOf<HillfortModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,12 +58,13 @@ class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
+        info("in StatsFragment")
        // if(app.auth.currentUser != null) {
        //     User = app.pObj.findUserById(app.auth.currentUser!!.uid.toString())!!
        // }
         info("User Id on create view : ${app.auth.currentUser!!.uid}")
-        placemarksList = ArrayList<HillfortModel>()
+       // placemarksList = ArrayList<HillfortModel>()
+      // placemarksList = MutableListOf<HillfortModel>()
         // Inflate the layout for this fragment
         root = inflater.inflate(R.layout.fragment_stats, container, false)
         activity?.title = "Stats -Current User ${app.auth.currentUser!!.uid.toString()} "
@@ -101,7 +103,7 @@ class StatsFragment : Fragment(), AnkoLogger, PlacemarkListener {
     fun getAllUserPlacemarks(userId: String?) {
         //  loader = createLoader(activity!!)
         //  showLoader(loader, "Downloading Placemarks from Firebase")
-
+        var placemarksList = mutableListOf<HillfortModel>()
         async {
             placemarksList.clear()
             db.child("users").child(userId!!).child("placemarks")

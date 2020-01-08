@@ -31,13 +31,15 @@ import com.me.hillfort.models.UserModel
 
 import kotlinx.android.synthetic.main.app_bar_home.*
 import kotlinx.android.synthetic.main.home.*
+import org.jetbrains.anko.AnkoLogger
+import org.jetbrains.anko.info
 import org.jetbrains.anko.progressDialog
 import org.jetbrains.anko.toast
 
 
 
 class Home : AppCompatActivity(),
-    NavigationView.OnNavigationItemSelectedListener {
+    NavigationView.OnNavigationItemSelectedListener, AnkoLogger {
 
     lateinit var ft: FragmentTransaction
     lateinit var User : UserModel
@@ -135,6 +137,7 @@ class Home : AppCompatActivity(),
 
 
     fun StatsF() :Fragment {
+        info("In Stats F I Stats F")
         //stats of Current User
         val args = Bundle()
      //   if(FirebaseAuth.getInstance().currentUser != null) {
@@ -174,6 +177,7 @@ class Home : AppCompatActivity(),
 
     private fun navigateTo(fragment: Fragment) {
        supportFragmentManager.beginTransaction()
+           .replace(R.id.homeFrame, fragment)
             .addToBackStack("Home")
             .commit()
     }

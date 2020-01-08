@@ -56,6 +56,7 @@ class StatsAdminSelectUser : Fragment() ,AnkoLogger, UserListener {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+
         activity?.title = "${app.auth.currentUser!!.uid}"
         root =  inflater.inflate(R.layout.fragment_user, container, false)
         root.recyclerViewU.setLayoutManager(LinearLayoutManager(activity))
